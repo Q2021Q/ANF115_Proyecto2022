@@ -1,0 +1,47 @@
+
+
+
+
+PARA LARAVEL EN VERCIONES 5.7 A 6.0
+
+https://github.com/kitloong/laravel-migrations-generator
+
+Comandos para migrar la BD existente a laravel
+
+composer require --dev "kitloong/laravel-migrations-generator"
+php artisan migrate:generate
+
+
+para los modelos
+https://cristianllanos.com/blog/2021-04-23-c%C3%B3mo-generar-modelos-de-laravel-desde-una-base-de-datos-existente
+
+composer require reliese/laravel --dev
+
+php artisan vendor:publish --tag=reliese-models
+
+php artisan code:models
+
+
+
+
+
+laravel 8
+
+https://github.com/bennett-treptow/laravel-migration-generator
+
+composer require --dev bennett-treptow/laravel-migration-generator
+
+php artisan vendor:publish --provider="LaravelMigrationGenerator\LaravelMigrationGeneratorProvider"
+
+php artisan generate:migrations --path=database/migrations               //antes ir a .env y confiigurar par BD
+
+
+para los modelos
+https://cristianllanos.com/blog/2021-04-23-c%C3%B3mo-generar-modelos-de-laravel-desde-una-base-de-datos-existente
+
+composer require reliese/laravel --dev
+
+php artisan vendor:publish --tag=reliese-models
+
+php artisan code:models
+
