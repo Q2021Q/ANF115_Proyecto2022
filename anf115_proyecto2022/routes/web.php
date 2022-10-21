@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\EmpresaController;
+use App\Http\Controllers\CuentaGeneralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,9 @@ route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa'])->name
 route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa']);
                                                    //fucion                //En la vista GuardarEmpresaView                                          
 route::post('guardarEmp',[EmpresaController::class,'guardarEmpresa'])->name('guardar_empresa');
+
+route::get('ImporformBalanceGeneral',[CuentaGeneralController::class,'importarBalanceGeneral']);
+route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance'])->name('importar_balance');
 
 Route::get('/', function () {
     return view('welcome');

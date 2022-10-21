@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Empresa;
+use App\Models\Empresa;//Modelo, para CURD de la empresa
 
 class EmpresaController extends Controller
 {
@@ -45,14 +45,14 @@ class EmpresaController extends Controller
 
         $empresa = new Empresa;
 
-      $empresa->idempresa = $request -> empresa;
+      /*$empresa->idempresa = $request -> empresa;
       $empresa->idrubroempresa = $request -> rubro;
       $empresa->nombreempresa =  $request -> nombreEmpresa;
 
-      $empresa->save();
+      $empresa->save();*/
       
-      return "Guardado con exito";
-      //dd($request);
+      //return "Guardado con exito";
+      dd($request);
       //return $request;
 
     }
