@@ -4,127 +4,66 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Carga de archivos</title>
 </head>
 <body>
-    <form action="{{route('importar_balance')}}" method = "POST" enctype="multipart/form-data">
+    <form action="{{route('importar_balance')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
-    <h2>Importar Balance General para la xxyy</h2>
-  <p>Selecciona el archivo a gestionar</p>
-        <input type="file" name="archivo2" id="archivo2" onchange="return validarExt()" />
+    <h2>Importar Balance General para xxyy</h2>
+    <p>Seleccione el archivo</p>
+        <input type="file" name="balance" id="balance" onchange="return validarExt()" />
         <br>
-        <br>
-        
-       
-    <div id="tablares" align="center"></div>
-
-
-
+        <br>        
+      
     <div id = "mostraContenido" style="display: none">
-          <input type="submit" value="Cargar Balance" >
-    </div>
+      <input type="submit" value="Cargar Balance" >
+      <img src="{{ asset('imagenes/csv.jpg') }}" alt="" class="imgPerfil" width="200" height="200">
+    </div>              <!--  Ancho -->
     </form>
 </body>
 
 <script>
+ 
 
-
-
+ //Esta funcion valida la extencion del archivo
 function validarExt()
 {
-    var archivoInput = document.getElementById('archivo2');
+    var archivoInput = document.getElementById('balance');
+   
     var archivoRuta = archivoInput.value;
+    console.log(archivoRuta);
     var extPermitidas = /(.csv)$/i;
     if(!extPermitidas.exec(archivoRuta)){
         alert('Extencion de archivo incorrecta');
         archivoInput.value = '';
         document.getElementById('mostraContenido').style.display = 'none';
-        document.getElementById('tablares').style.display = 'none';
         return false;
     }
     else
     {
       document.getElementById('mostraContenido').style.display = ''; 
-      document.getElementById('tablares').style.display = '';
       return true;
     }
 }
 
+//*************************************************************************************** */
+//COMPATIBLE CON CHROME
+// Esta seccion de codigo es para limpiar el formulario al retroceder en el navegador
+// window.onbeforeunload = function(e) {
+//  window.location.reload();
+// };
 
-    /**
-    * Importar y operar con .csv
-    **/
-    function crearTabla(data) {
-      const todasFilas = data.split(/\r?\n|\r/);
-      let tabla = '<table>';
-      for (let fila = 0; fila < todasFilas.length; fila++) {
-        if (fila === 0) {
-          tabla += '<thead>';
-          tabla += '<tr>';
-        } else {
-          tabla += '<tr>';
-        }
-        const celdasFila = todasFilas[fila].split(';');
-        for (let rowCell = 0; rowCell < celdasFila.length; rowCell++) {
-          if (fila === 0) {
-            tabla += '<th>';
-            tabla += celdasFila[rowCell];
-            tabla += '</th>';
-          } else {
-            tabla += '<td>';
-            // if (rowCell === 3) {
-            //   tabla += '<img src="'+celdasFila[rowCell]+'">';
-            // } else {
-            //   tabla += celdasFila[rowCell];
-            // }
-            tabla += celdasFila[rowCell];
-            tabla += '</td>';
-          }
-        }
-        if (fila === 0) {
-          tabla += '</tr>';
-          tabla += '</thead>';
-          tabla += '<tbody>';
-        } else {
-          tabla += '</tr>';
-        }
-      } 
-      tabla += '</tbody>';
-      tabla += '</table>';
-      document.querySelector('#tablares').innerHTML = tabla;
-    }
+// window.addEventListener("popstate", detectHistory);
 
-    function leerArchivo2(evt) {
-      let file = evt.target.files[0];
-      let reader = new FileReader();
-      reader.onload = (e) => {
-        // Cuando el archivo se terminó de cargar
-        if(validarExt())
-           crearTabla(e.target.result)
-      };
-      // Leemos el contenido del archivo seleccionado
-      reader.readAsText(file);
-    }
-    document.querySelector('#archivo2')
-      .addEventListener('change', leerArchivo2, false);
-
-    /**
-     * Leer y mostrar contenido inmediatamente
-    **/  
-   
-    function leerArchivo(e) {
-      const archivo = e.target.files[0];
-      if (!archivo) {
-        return;
-      }
-      const lector = new FileReader();
-      lector.onload = function(e) {
-        const contenido = e.target.result;
-        mostrarContenido(contenido);
-      };
-      lector.readAsText(archivo);
-    }
-  
-  </script>
+// function detectHistory(){
+// console.log("bien")
+// }
+  if(window.history && history.pushState){ // check for history api support
+	window.addEventListener('load', function(){
+		document.getElementById("cargaFile").reset();
+	}, false);
+}
+//******************************************************************************** */
+</script>
 
 </html>

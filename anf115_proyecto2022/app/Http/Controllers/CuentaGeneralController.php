@@ -14,7 +14,7 @@ class CuentaGeneralController extends Controller
 
     public function importarBalance(Request $request){
 
-        $BalanceGeneral = $request->archivo2;  
+        $BalanceGeneral = $request->balance;  
         $balance = fopen($BalanceGeneral,"r"); 
 
         //$b = fread($balance, filesize($BalanceGeneral));
