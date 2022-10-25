@@ -7,21 +7,29 @@ use Illuminate\Http\Request;
 
 use App\Models\Cuentageneral;//Modelo, para CURD de la tabla cuentageneral
 
-//Bariables globales
-global $cuentasBalance;
+use App\Http\Controllers\Funciones;
+
+
 
 class BalanceG
 {
     // Declaración de una propiedad
+    protected $idControlError; //atributo para detectar errores
+
+
     protected $codigoCuenta;
     protected $tipoCuenta;
     protected $nombreCuenta;
     protected $saldoCuenta;
     protected $codigoCuentaRatio;
 
-    protected $cuentaList = array();
 
-
+    public function get_idControlError(){
+        return $this->idControlError;
+     }
+     public function set_idControlError($idControlError){
+        $this->idControlError = $idControlError;
+     }
 
     public function get_codigoCuenta(){
         return $this->codigoCuenta;
@@ -59,37 +67,41 @@ class BalanceG
      }
 
 
-     public function get_cuentaList(){
-        return $this->cuentaList;
-     }
-     public function set_cuentaList($cuentaList){
-        $this->cuentaList = $cuentaList;
-     }
+     public  function extraerCuentasRepetidasBalance($cuentaBalance): array{
 
-
-     public  function extraerCuentasRepetidasBalance($cuentaBalance){
-
-        $cuentasBalanceRepetida = array();
-
-        $cuentaBalance->get_cuentaList();
-
-        foreach ($cuentaBalance as $balance) {
-            $codBalance = $balance->get_codigoCuenta();
-            foreach ($cuentaBalance as $balance) {
-            
-                if($codBalance == $balance->get_codigoCuenta()) {
-
-                    $cuentas_repetidas_balance = new BalanceG();
-                    $cuentas_repetidas_balance->set_codigoCuenta($balance->get_codigoCuenta());
-                    array_push($cuentasBalanceRepetida, $cuentas_repetidas_balance);
-                }
-
-            }
-
+        $codigoCuentaBalance = array();    
+        for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+            $codigoCuentaBalance[$j] = $cuentaBalance[$j]->get_codigoCuenta();
         }
-         return $cuentasBalanceRepetida;
-    }
-   
+    
+            $arraySinDuplicados = array();
+            foreach($codigoCuentaBalance as $indice => $elemento) {
+                if (!in_array($elemento, $arraySinDuplicados)) {
+                    $arraySinDuplicados[$indice] = $elemento;
+                }
+            }
+           
+            $cuentasRepetidas = [];   
+            foreach($arraySinDuplicados as $indi => $elemen) {
+
+                $contador = 0;
+                for ( $l = 0; $l < count($cuentaBalance); $l = $l + 1 ) {
+                   if($elemen == $cuentaBalance[$l]->get_codigoCuenta()) {
+                    $contador = $contador + 1;
+                    //echo "  *    ";
+                   }
+                } 
+              //  echo "  *    ";
+                if($contador > 1){
+                    $cuentasRepetidas[$indi] = $elemen;
+                }
+            }      
+
+
+            // return $codigoCuentaBalance;
+            return $cuentasRepetidas;
+         }
+
 }
 
 class CuentaGeneralController extends Controller
@@ -114,12 +126,14 @@ class CuentaGeneralController extends Controller
                 $balanceG = new BalanceG();
 
                 $numero = count($datos);
+
+               
                // echo "<p> $numero de campos en la línea $fila: <br /></p>\n";
                 $fila++;
                 for ($c=0; $c < $numero; $c++) {
                     switch ($c) {
                         case 0:
-                            $balanceG->set_codigoCuenta($datos[$c]);//
+                            $balanceG->set_codigoCuenta(trim($datos[$c], ' ;*,'));//
                            // echo $datos[$c] . "<br />\n";
                             break;
                         case 1:
@@ -149,11 +163,11 @@ class CuentaGeneralController extends Controller
             fclose($balance);
         }
 
-        // $balance = new BalanceG();
-        // $balance->set_cuentaList($cuentasBalance);
-        // $balance->extraerCuentasRepetidasBalance($balance);
-        // dd($balance_buscarCuentasRepetidas);
-     return view('BalanceImportadoView', compact('cuentasBalance'));
+        
+        $balance = new BalanceG();
+        $cuentas_repetidas = $balance->extraerCuentasRepetidasBalance($cuentasBalance);
+       // dd($cuentas_repetidas);
+     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentas_repetidas'));
      // return "Guardado con exito";
     //  dd($cuentasBalance);
      // return $cuentasBalance;

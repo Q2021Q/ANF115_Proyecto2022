@@ -16,17 +16,31 @@
                 <th>Nombre de la cuenta</th>
                 <th>Saldo de la cuenta</th>
                 <th>Cuenta de ratio</th>
+               
             </tr>
 
             <?php
 
     $concat = '';
 
-    foreach ($cuentasBalance as $balance) {
+    foreach ($cuentasBalance as $indice_1 => $balance) {
 
+        //compara las cuentas y si encuentra repetida $error = true
+        $error = false;
+        foreach($cuentas_repetidas as $indice => $elemento) {
+            if ($indice_1 == $indice) {
+                $error = true;
+            }
+        }
+
+        if($error){
+            $concat .= '<tr span style="color:blue" width="50%" bgcolor=FFC0CB>';
+        }
+        else
+             $concat .= '<tr>';
         //Concatenamos las tablas en una variable, también podriamos hacer el "echo" directamente
-        $concat .= '<tr>';
-        $concat .= '<td>' . $balance->get_codigoCuenta() .'</td>';
+      
+        $concat .= '<td >' .$balance->get_codigoCuenta() .'</td>';
         $concat .= '<td>' . $balance->get_tipoCuenta() .'</td>';
         $concat .= '<td>' . $balance->get_nombreCuenta() .'</td>';
         $concat .= '<td>' . $balance->get_saldoCuenta() .'</td>';
@@ -41,7 +55,9 @@
 
 </body>
 <script>
-
+.bgcolor-red {
+    background-color:red;
+}
 </script>
 </html>
 
