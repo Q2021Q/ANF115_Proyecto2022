@@ -9,6 +9,23 @@
 <body>
     <h1>Balance General</h1>
 
+<?php
+    $mensaje_error_si_no = '';
+    $sms = $mensaje;
+    if($error_cuenta == TRUE){
+        $mensaje_error_si_no .= '<h3  style="color:#FF0000">';
+        $mensaje_error_si_no .=  $sms;
+        $mensaje_error_si_no .= '</h3>';
+    }
+       
+     else{
+        $mensaje_error_si_no .= '<h3 style="color:#9A4BF9">';
+        $mensaje_error_si_no .=  $sms;
+        $mensaje_error_si_no .= '</h3>';
+     }
+        
+    echo $mensaje_error_si_no;
+?>
     <table border="1">
             <tr>
                 <th>Codigo de la cuenta</th>
@@ -25,19 +42,26 @@
 
     foreach ($cuentasBalance as $indice_1 => $balance) {
 
+       
+
         //compara las cuentas y si encuentra repetida $error = true
         $error = false;
-        foreach($cuentas_repetidas as $indice => $elemento) {
+        foreach($cuentasInvalidas as $indice => $elemento) {
             if ($indice_1 == $indice) {
                 $error = true;
             }
         }
 
+    if($error_cuenta == TRUE){
         if($error){
             $concat .= '<tr span style="color:blue" width="50%" bgcolor=FFC0CB>';
         }
         else
-             $concat .= '<tr>';
+             $concat .= '<tr >';
+    }
+    else 
+        $concat .= '<tr width="50%" bgcolor=#EBF5FB>';
+    
         //Concatenamos las tablas en una variable, también podriamos hacer el "echo" directamente
       
         $concat .= '<td >' .$balance->get_codigoCuenta() .'</td>';

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Cuentageneral;//Modelo, para CURD de la tabla cuentageneral
 
+use App\Models\Catalogo;//Modelo, para CURD de la empresa
+
 use App\Http\Controllers\Funciones;
 
 
@@ -102,6 +104,26 @@ class BalanceG
             return $cuentasRepetidas;
          }
 
+    public  function extraerCuentaSinRegistro_Catalog($cuentaBalance): array{
+
+    $codigoCuentaBalance = array();    
+            for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+                $codigoCuentaBalance[$j] = $cuentaBalance[$j]->get_codigoCuenta();
+            }
+
+            $arrayCuentaSinRegistro = array();
+            foreach($codigoCuentaBalance as $indice => $elemento) {
+             $consultaCatalo = Catalogo::where('codigocuenta', '=',$elemento)->get();
+             //   echo $consultaCatalo;
+                if ($consultaCatalo->isEmpty()) {
+                    $arrayCuentaSinRegistro[$indice] = $elemento;
+                   // echo "*_";
+                }
+            }
+
+        return $arrayCuentaSinRegistro;
+         }      
+
 }
 
 class CuentaGeneralController extends Controller
@@ -167,7 +189,30 @@ class CuentaGeneralController extends Controller
         $balance = new BalanceG();
         $cuentas_repetidas = $balance->extraerCuentasRepetidasBalance($cuentasBalance);
        // dd($cuentas_repetidas);
-     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentas_repetidas'));
+
+       $mensaje = "Cargado con exito";
+       $error_cuenta = FALSE;
+//--------------------------------------------------------------------------------------------------------------
+       $cuentasInvalidas = $cuentas_repetidas;
+       if(empty(!$cuentas_repetidas)){
+        $mensaje = "Error en el condigo de cuenta, los codigos deben ser unicos";
+        $error_cuenta = TRUE;      
+        return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+       }
+//--------------------------------------------------------------------------------------------------------------
+       $cuentas_sinRegistro = $balance->extraerCuentaSinRegistro_Catalog($cuentasBalance);
+       $cuentasInvalidas = $cuentas_sinRegistro;
+       if(empty(!$cuentas_sinRegistro)){
+        $mensaje = "Error en el codigo de cuenta, no se encontro uno o varios registro en el catalogo";
+        $error_cuenta = TRUE;
+        return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+        //dd($cuentas_sinRegistro);
+       }
+//-----------------------------------------------------------------------------------------------------------------      
+//Si no hay errores en las cuentas
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+
+     //return view('BalanceImportadoView', compact('cuentasBalance', 'cuentas_repetidas', 'mensaje', 'error_cuenta'));
      // return "Guardado con exito";
     //  dd($cuentasBalance);
      // return $cuentasBalance;
