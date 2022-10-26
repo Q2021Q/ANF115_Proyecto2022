@@ -218,9 +218,28 @@ public  function extraerCuentaSinRegistro_tipoCuenta($cuentaBalance): array{
                 }
     }
     
-return $arrayIdTipoCuentaSinRegistro;
+ return $arrayIdTipoCuentaSinRegistro;
 } 
 
+//--------------------------------------------------------------------------------------------------------------------------------------
+public  function extraerCuentaSaldosInvalidosImport($cuentaBalance): array{
+
+    $arryCuentasImportSaldos = array();    
+         for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+            $saldoCuenta = $cuentaBalance[$j]->get_saldoCuenta();
+            $arryCuentasImportSaldos[$j] =  $saldoCuenta;
+          }
+    
+          $arryCuentasInvalidasImport = array();
+            foreach($arryCuentasImportSaldos as $indice => $elemento) {
+                if (!is_numeric($elemento)) {
+                    $arryCuentasInvalidasImport[$indice] = $elemento;
+                        //echo "*_";
+                }
+    }
+    
+     return $arryCuentasInvalidasImport;
+}
  
  public  function setNombreCuentaRatio($cuentaBalance): array{   
     foreach($cuentaBalance as $elemento) { 
@@ -392,7 +411,16 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
     
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
    }
- //dd($cuentasInvalidas);
+ //-------------------------------------------------------------------------------------------------------------------------------------
+ 
+ $arraySaldosInvalidos = $balance->extraerCuentaSaldosInvalidosImport($cuentasBalance);
+ $cuentasInvalidas = $arraySaldosInvalidos;
+ if(empty(!$arraySaldosInvalidos)){
+    $mensaje = "Error en el saldo de la cuenta, uno o mas saldos son invalidos";
+    $error_cuenta = TRUE;   
+    
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
 // dd($BalanceImportadoView);
 //Si no hay errores en las cuentas
  return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
