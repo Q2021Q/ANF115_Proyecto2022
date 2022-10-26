@@ -116,7 +116,44 @@ class BalanceG
 
             // return $codigoCuentaBalance;
             return $cuentasRepetidas;
-         }
+    }
+//---------------------------------------------------------------------------------------------------------------------------
+public  function extraerCuentasDuplicasdadRatio($cuentaBalance): array{
+
+    $arrayCodigoCuetasRatio = array();    
+    for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+        $arrayCodigoCuetasRatio[$j] = $cuentaBalance[$j]->get_codigoCuentaRatio();
+    }
+
+        $arraySinDuplicados = array();
+        foreach($arrayCodigoCuetasRatio as $indice => $elemento) {
+            if (!in_array($elemento, $arraySinDuplicados)) {
+                $arraySinDuplicados[$indice] = $elemento;
+            }
+        }
+       
+        $cuentasRepetidas = [];   
+        foreach($arraySinDuplicados as $indi => $elemen) {
+
+            $contador = 0;
+            for ( $l = 0; $l < count($cuentaBalance); $l = $l + 1 ) {
+               if($elemen == $cuentaBalance[$l]->get_codigoCuentaRatio()) {
+                $contador = $contador + 1;
+                //echo "  *    ";
+               }
+            } 
+          //  echo "  *    ";
+            if($contador > 1){
+                $cuentasRepetidas[$indi] = $elemen;
+            }
+        }      
+
+
+        // return $codigoCuentaBalance;
+        return $cuentasRepetidas;
+     }
+
+         
 
     public  function extraerCuentaSinRegistro_Catalog($cuentaBalance): array{
 
@@ -309,14 +346,19 @@ if(empty(!$cuentas_sinRegistro_ratios)){
     $error_cuenta = TRUE;   
     
      //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
-     
-   
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
-    //dd($BalanceImportadoView);
-   // dd($BalanceImportadoView);
-   // dd($cuentas_sinRegistro_ratios);
    }
- //dd($cuentasInvalidas);
+
+//-------------------------------------------------------------------------------------------------------------------------------
+  $CuentasDuplicadasRatios = $balance->extraerCuentasDuplicasdadRatio($cuentasBalance); 
+  $cuentasInvalidas = $CuentasDuplicadasRatios;
+  if(empty(!$CuentasDuplicadasRatios)){
+    $mensaje = "Error en el condigo de la cuenta ratio, codigos duplicados";
+    $error_cuenta = TRUE;   
+    
+     //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
  //$consultaRatio = Cuentaratio::select(['nombrecuentaratio'])->where('codcuentaratio', '=', 'i')->get();
  //$consultaRatio = Cuentaratio::all();
 //  foreach($consultaRatio as $elemento) {
