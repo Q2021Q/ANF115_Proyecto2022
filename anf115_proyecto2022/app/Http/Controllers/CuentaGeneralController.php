@@ -197,7 +197,30 @@ public  function extraerCuentasDuplicasdadRatio($cuentaBalance): array{
         }
         
     return $arrayRatioSinRegistro;
- } 
+} 
+
+//--------------------------------------------------------------------------------------------------------------------------
+public  function extraerCuentaSinRegistro_tipoCuenta($cuentaBalance): array{
+
+    $arryIdTipoCuenta = array();    
+         for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+            $idTipoCuenta = $cuentaBalance[$j]->get_tipoCuenta();
+                $arryIdTipoCuenta[$j] =  $idTipoCuenta;
+          }
+    
+            $arrayIdTipoCuentaSinRegistro = array();
+            foreach( $arryIdTipoCuenta as $indice => $elemento) {
+                $consultaTipoCuenta = Tipocuentum::where('idtipocuenta', '=',$elemento)->get();
+                   //echo  $consultaRatio;
+                if ($consultaTipoCuenta->isEmpty()) {
+                    $arrayIdTipoCuentaSinRegistro[$indice] = $elemento;
+                        //echo "*_";
+                }
+    }
+    
+return $arrayIdTipoCuentaSinRegistro;
+} 
+
  
  public  function setNombreCuentaRatio($cuentaBalance): array{   
     foreach($cuentaBalance as $elemento) { 
@@ -359,16 +382,20 @@ if(empty(!$cuentas_sinRegistro_ratios)){
      //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
    }
- //$consultaRatio = Cuentaratio::select(['nombrecuentaratio'])->where('codcuentaratio', '=', 'i')->get();
- //$consultaRatio = Cuentaratio::all();
-//  foreach($consultaRatio as $elemento) {
-//     echo $elemento->nombrecuentaratio;
-//     //dd($elemento->CODCUENTARATIO);
-// }
- //dd($consultaRatio);
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+$cuentaSinRegistro_tipoCuenta = $balance->extraerCuentaSinRegistro_tipoCuenta($cuentasBalance);
+$cuentasInvalidas = $cuentaSinRegistro_tipoCuenta;
+if(empty(!$cuentaSinRegistro_tipoCuenta)){
+    $mensaje = "Error en el id del tipo de cuenta, registros no encontrados";
+    $error_cuenta = TRUE;   
+    
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
+ //dd($cuentasInvalidas);
 // dd($BalanceImportadoView);
 //Si no hay errores en las cuentas
-return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+ return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
      
     }
 
