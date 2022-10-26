@@ -398,7 +398,6 @@ if(empty(!$cuentas_sinRegistro_ratios)){
     $mensaje = "Error en el condigo de la cuenta ratio, codigos duplicados";
     $error_cuenta = TRUE;   
     
-     //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
    }
 //--------------------------------------------------------------------------------------------------------------------------------------
