@@ -60,7 +60,7 @@
              $concat .= '<tr >';
     }
     else 
-        $concat .= '<tr width="50%" bgcolor=#EBF5FB>';
+        $concat .= '<tr bgcolor=#EBF5FB>';
     
         //Concatenamos las tablas en una variable, también podriamos hacer el "echo" directamente
       

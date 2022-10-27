@@ -7,14 +7,16 @@
     <title>Carga de archivos</title>
 </head>
 <body>
+
     <form action="{{route('importar_balance')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
     <h2>Importar Balance General para xxyy</h2>
     <p>Seleccione el archivo</p>
         <input type="file" name="balance" id="balance" onchange="return validarExt()" />
-        <br>
-        <br>        
-      
+        <br> 
+        <br> 
+        <input type="number" id="indicadorEstadoFinanciero" name="indicadorEstadoFinanciero" value="1" style="display: none">
+  
     <div id = "mostraContenido" style="display: none">
       <input type="submit" value="Cargar Balance" >
       <img src="{{ asset('imagenes/csv.jpg') }}" alt="" class="imgPerfil" width="200" height="200">

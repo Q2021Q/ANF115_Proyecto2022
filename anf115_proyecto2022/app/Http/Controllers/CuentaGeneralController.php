@@ -168,7 +168,7 @@ public  function extraerCuentasDuplicasdadRatio($cuentaBalance): array{
              //   echo $consultaCatalo;
                 if ($consultaCatalo->isEmpty()) {
                     $arrayCuentaSinRegistro[$indice] = $elemento;
-                   // echo "*_";
+                  // echo "*_";
                 }
             }
 
@@ -283,6 +283,18 @@ public  function extraerCuentaSaldosInvalidosImport($cuentaBalance): array{
     return $cuentaBalance;
  }
 
+ public  function setReasignarCamposVacios_finla($cuentaBalance): array{   
+    foreach($cuentaBalance as $elemento) { 
+        $idTipoCuenta = $elemento->get_codigoCuenta();
+
+             if (empty($idTipoCuenta)) {
+                 $elemento->set_codigoCuenta(".");//solo para que la vista lusca una fila con las mismas dimenciones que el reto de filas
+                 //echo "--*--";
+            }
+    }   
+    return $cuentaBalance;
+ }
+
 }
 
 class CuentaGeneralController extends Controller
@@ -351,7 +363,7 @@ class CuentaGeneralController extends Controller
 
        $cuentasBalance = $balance->setNombreCuentaRatio($cuentasBalance);
        $cuentasBalance = $balance->setNombreTipoCuenta($cuentasBalance);
-
+       $cuentasBalance = $balance->setReasignarCamposVacios_finla($cuentasBalance);
        $mensaje = "Cargado con exito";
        $error_cuenta = FALSE;
 
@@ -420,8 +432,9 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
     
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
    }
-// dd($BalanceImportadoView);
 //Si no hay errores en las cuentas
+$indicadorEstadoFinanciero = $request->indicadorEstadoFinanciero;
+//dd($indicadorEstadoFinanciero);
  return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
      
     }
