@@ -65,10 +65,10 @@
         //Concatenamos las tablas en una variable, también podriamos hacer el "echo" directamente
       
         $concat .= '<td >' .$balance->get_codigoCuenta() .'</td>';
-        $concat .= '<td>' . $balance->get_tipoCuenta() .'</td>';
+        $concat .= '<td>' . $balance->get_nombreTipoCuenta() .'</td>';
         $concat .= '<td>' . $balance->get_nombreCuenta() .'</td>';
         $concat .= '<td>' . $balance->get_saldoCuenta() .'</td>';
-        $concat .= '<td>' . $balance->get_codigoCuentaRatio() .'</td>';
+        $concat .= '<td>' . $balance->get_nombreCuentaRatio() .'</td>';
     
         $concat .= '</tr>';
     }

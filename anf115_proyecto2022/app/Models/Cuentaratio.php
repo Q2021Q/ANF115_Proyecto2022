@@ -19,7 +19,10 @@ use Illuminate\Database\Eloquent\Model;
 class Cuentaratio extends Model
 {
 	protected $table = 'cuentaratio';
+	
+	
 	protected $primaryKey = 'CODCUENTARATIO';
+	
 	public $incrementing = false;
 	public $timestamps = false;
 

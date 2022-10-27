@@ -7,17 +7,18 @@ use Illuminate\Http\Request;
 
 use App\Models\Cuentageneral;//Modelo, para CURD de la tabla cuentageneral
 
-use App\Models\Catalogo;//Modelo, para CURD de la empresa
+use App\Models\Catalogo;//Modelo, para CURD de la Catalogo
 
-use App\Http\Controllers\Funciones;
+use App\Models\Cuentaratio;//Modelo, para CURD de la Catalogo
+use App\Models\Tipocuentum;
+
 
 
 
 class BalanceG
 {
     // Declaración de una propiedad
-    protected $idControlError; //atributo para detectar errores
-
+    
 
     protected $codigoCuenta;
     protected $tipoCuenta;
@@ -25,13 +26,12 @@ class BalanceG
     protected $saldoCuenta;
     protected $codigoCuentaRatio;
 
+    protected $nombreCuentaRatio;
+    protected $nombreTipoCuenta;
+    
 
-    public function get_idControlError(){
-        return $this->idControlError;
-     }
-     public function set_idControlError($idControlError){
-        $this->idControlError = $idControlError;
-     }
+
+
 
     public function get_codigoCuenta(){
         return $this->codigoCuenta;
@@ -68,6 +68,20 @@ class BalanceG
         $this->codigoCuentaRatio = $codigoCuentaRatio;
      }
 
+     public function get_nombreCuentaRatio(){
+        return $this->nombreCuentaRatio;
+     }
+     public function set_nombreCuentaRatio($nombreCuentaRatio){
+        $this->nombreCuentaRatio = $nombreCuentaRatio;
+     }
+
+     public function get_nombreTipoCuenta(){
+        return $this->nombreTipoCuenta;
+     }
+     public function set_nombreTipoCuenta($nombreTipoCuenta){
+        $this->nombreTipoCuenta = $nombreTipoCuenta;
+     }
+
 
      public  function extraerCuentasRepetidasBalance($cuentaBalance): array{
 
@@ -102,7 +116,44 @@ class BalanceG
 
             // return $codigoCuentaBalance;
             return $cuentasRepetidas;
-         }
+    }
+//---------------------------------------------------------------------------------------------------------------------------
+public  function extraerCuentasDuplicasdadRatio($cuentaBalance): array{
+
+    $arrayCodigoCuetasRatio = array();    
+    for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+        $arrayCodigoCuetasRatio[$j] = $cuentaBalance[$j]->get_codigoCuentaRatio();
+    }
+
+        $arraySinDuplicados = array();
+        foreach($arrayCodigoCuetasRatio as $indice => $elemento) {
+            if (!in_array($elemento, $arraySinDuplicados)) {
+                $arraySinDuplicados[$indice] = $elemento;
+            }
+        }
+       
+        $cuentasRepetidas = [];   
+        foreach($arraySinDuplicados as $indi => $elemen) {
+
+            $contador = 0;
+            for ( $l = 0; $l < count($cuentaBalance); $l = $l + 1 ) {
+               if($elemen == $cuentaBalance[$l]->get_codigoCuentaRatio()) {
+                $contador = $contador + 1;
+                //echo "  *    ";
+               }
+            } 
+          //  echo "  *    ";
+            if($contador > 1){
+                $cuentasRepetidas[$indi] = $elemen;
+            }
+        }      
+
+
+        // return $codigoCuentaBalance;
+        return $cuentasRepetidas;
+     }
+
+         
 
     public  function extraerCuentaSinRegistro_Catalog($cuentaBalance): array{
 
@@ -123,6 +174,114 @@ class BalanceG
 
         return $arrayCuentaSinRegistro;
          }      
+
+    public  function extraerCuentaSinRegistro_cuentaRatio($cuentaBalance): array{
+
+        $arryCodigotaRatio = array();    
+             for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+                $codigo_cRatio = $cuentaBalance[$j]->get_codigoCuentaRatio();
+                if(!empty($codigo_cRatio)){
+                    $arryCodigotaRatio[$j] =  $codigo_cRatio;
+                }
+               
+              }
+        
+                $arrayRatioSinRegistro = array();
+                foreach( $arryCodigotaRatio as $indice => $elemento) {
+                    $consultaRatio = Cuentaratio::where('codcuentaratio', '=',$elemento)->get();
+                       //echo  $consultaRatio;
+                    if ($consultaRatio->isEmpty()) {
+                        $arrayRatioSinRegistro[$indice] = $elemento;
+                            //echo "*_";
+                    }
+        }
+        
+    return $arrayRatioSinRegistro;
+} 
+
+//--------------------------------------------------------------------------------------------------------------------------
+public  function extraerCuentaSinRegistro_tipoCuenta($cuentaBalance): array{
+
+    $arryIdTipoCuenta = array();    
+         for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+            $idTipoCuenta = $cuentaBalance[$j]->get_tipoCuenta();
+                $arryIdTipoCuenta[$j] =  $idTipoCuenta;
+          }
+    
+            $arrayIdTipoCuentaSinRegistro = array();
+            foreach( $arryIdTipoCuenta as $indice => $elemento) {
+                $consultaTipoCuenta = Tipocuentum::where('idtipocuenta', '=',$elemento)->get();
+                   //echo  $consultaRatio;
+                if ($consultaTipoCuenta->isEmpty()) {
+                    $arrayIdTipoCuentaSinRegistro[$indice] = $elemento;
+                        //echo "*_";
+                }
+    }
+    
+ return $arrayIdTipoCuentaSinRegistro;
+} 
+
+//--------------------------------------------------------------------------------------------------------------------------------------
+public  function extraerCuentaSaldosInvalidosImport($cuentaBalance): array{
+
+    $arryCuentasImportSaldos = array();    
+         for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
+            $saldoCuenta = $cuentaBalance[$j]->get_saldoCuenta();
+            $arryCuentasImportSaldos[$j] =  $saldoCuenta;
+          }
+    
+          $arryCuentasInvalidasImport = array();
+            foreach($arryCuentasImportSaldos as $indice => $elemento) {
+                if (!is_numeric($elemento)) {
+                    $arryCuentasInvalidasImport[$indice] = $elemento;
+                        //echo "*_";
+                }
+    }
+    
+     return $arryCuentasInvalidasImport;
+}
+ 
+ public  function setNombreCuentaRatio($cuentaBalance): array{   
+    foreach($cuentaBalance as $elemento) { 
+        $codigo_cRatio = $elemento->get_codigoCuentaRatio();
+        // echo $codigo_cRatio;
+            if(!empty($codigo_cRatio)){
+                $consultaRatio = Cuentaratio::select(['nombrecuentaratio'])->where('codcuentaratio', '=',$codigo_cRatio)->get();
+                // echo $consultaRatio;
+                if (!$consultaRatio->isEmpty()) {
+                    foreach($consultaRatio as $consultaNombre) {
+                        $elemento->set_nombreCuentaRatio($consultaNombre->nombrecuentaratio);
+                        // echo $elemento->nombrecuentaratio;
+                            //dd($elemento->CODCUENTARATIO);
+                        }
+                }
+                else
+                    $elemento->set_nombreCuentaRatio($codigo_cRatio);
+            }
+            
+    }   
+    return $cuentaBalance;
+ }
+
+ public  function setNombreTipoCuenta($cuentaBalance): array{   
+    foreach($cuentaBalance as $elemento) { 
+        $idTipoCuenta = $elemento->get_tipoCuenta();
+        // echo $codigo_cRatio;
+                $consultaTipoCuenta = Tipocuentum::select(['nomtipocuenta'])->where('idtipocuenta', '=', $idTipoCuenta)->get();
+                // echo $consultaRatio;
+                if (!$consultaTipoCuenta->isEmpty()) {
+                    foreach($consultaTipoCuenta as $consultaNombre) {
+                        $elemento->set_nombreTipoCuenta($consultaNombre->nomtipocuenta);
+                        // echo $elemento->nombrecuentaratio;
+                            //dd($elemento->CODCUENTARATIO);
+                        }
+                }
+                else
+                 $elemento->set_nombreTipoCuenta($idTipoCuenta);
+            
+    }   
+    return $cuentaBalance;
+ }
 
 }
 
@@ -159,22 +318,22 @@ class CuentaGeneralController extends Controller
                            // echo $datos[$c] . "<br />\n";
                             break;
                         case 1:
-                            $balanceG->set_tipoCuenta($datos[$c]);//
+                            $balanceG->set_tipoCuenta(trim($datos[$c], ' ;*,'));//
                             // echo $datos[$c] . "<br />\n";
                             break;
                         case 2:
-                            $balanceG->set_nombreCuenta($datos[$c]);
+                            $balanceG->set_nombreCuenta(trim($datos[$c], ' ;*,'));
                            // echo $datos[$c] . "<br />\n";
                             break;
                         case 3:
-                            $balanceG->set_saldoCuenta($datos[$c]);
+                            $balanceG->set_saldoCuenta(trim($datos[$c], ' ;*,'));
                            // echo $datos[$c] . "<br />\n";
                             break;
                         case 4:
                             if($datos[$c] == NULL)
                                  $balanceG->set_codigoCuentaRatio("No");
                             else 
-                                 $balanceG->set_codigoCuentaRatio($datos[$c]);    
+                                 $balanceG->set_codigoCuentaRatio(trim($datos[$c], ' ;*,'));    
                                // echo $datos[$c] . "<br />\n";
                              break;    
                     }
@@ -187,36 +346,83 @@ class CuentaGeneralController extends Controller
 
         
         $balance = new BalanceG();
-        $cuentas_repetidas = $balance->extraerCuentasRepetidasBalance($cuentasBalance);
+     
        // dd($cuentas_repetidas);
+
+       $cuentasBalance = $balance->setNombreCuentaRatio($cuentasBalance);
+       $cuentasBalance = $balance->setNombreTipoCuenta($cuentasBalance);
 
        $mensaje = "Cargado con exito";
        $error_cuenta = FALSE;
+
+//validacion
 //--------------------------------------------------------------------------------------------------------------
-       $cuentasInvalidas = $cuentas_repetidas;
-       if(empty(!$cuentas_repetidas)){
-        $mensaje = "Error en el condigo de cuenta, los codigos deben ser unicos";
-        $error_cuenta = TRUE;      
-        return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
-       }
-//--------------------------------------------------------------------------------------------------------------
-       $cuentas_sinRegistro = $balance->extraerCuentaSinRegistro_Catalog($cuentasBalance);
-       $cuentasInvalidas = $cuentas_sinRegistro;
-       if(empty(!$cuentas_sinRegistro)){
-        $mensaje = "Error en el codigo de cuenta, no se encontro uno o varios registro en el catalogo";
-        $error_cuenta = TRUE;
-        return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
-        //dd($cuentas_sinRegistro);
-       }
-//-----------------------------------------------------------------------------------------------------------------      
-//Si no hay errores en las cuentas
+$cuentas_sinRegistro = $balance->extraerCuentaSinRegistro_Catalog($cuentasBalance);
+$cuentasInvalidas = $cuentas_sinRegistro;
+if(empty(!$cuentas_sinRegistro)){
+  $mensaje = "Error en el codigo de cuenta, no se encontro uno o varios registros en el catalogo";
+    $error_cuenta = TRUE;
+    //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
+    //$BalanceImportadoView = $balance->asignarCuentaRatio_xKey($cuentasBalance);
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+        //dd($cuentas_sinRegistro);
+}
+    
+  //validacion     
+//-----------------------------------------------------------------------------------------------------------------      
+$cuentas_repetidas = $balance->extraerCuentasRepetidasBalance($cuentasBalance);
+$cuentasInvalidas = $cuentas_repetidas;
+if(empty(!$cuentas_repetidas)){
+ $mensaje = "Error en el condigo de cuenta, los codigos deben ser unicos";
+ $error_cuenta = TRUE;      
+ return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+}
 
-     //return view('BalanceImportadoView', compact('cuentasBalance', 'cuentas_repetidas', 'mensaje', 'error_cuenta'));
-     // return "Guardado con exito";
-    //  dd($cuentasBalance);
-     // return $cuentasBalance;
+  //Validacion  
+//--------------------------------------------------------------------------------------------------------------
 
+$cuentas_sinRegistro_ratios = $balance->extraerCuentaSinRegistro_cuentaRatio($cuentasBalance);
+$cuentasInvalidas = $cuentas_sinRegistro_ratios;
+if(empty(!$cuentas_sinRegistro_ratios)){
+    $mensaje = "Error en el condigo de la cuenta ratio, no se encontro uno o varios registros";
+    $error_cuenta = TRUE;   
+    
+     //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
+
+//-------------------------------------------------------------------------------------------------------------------------------
+  $CuentasDuplicadasRatios = $balance->extraerCuentasDuplicasdadRatio($cuentasBalance); 
+  $cuentasInvalidas = $CuentasDuplicadasRatios;
+  if(empty(!$CuentasDuplicadasRatios)){
+    $mensaje = "Error en el condigo de la cuenta ratio, codigos duplicados";
+    $error_cuenta = TRUE;   
+    
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
+//--------------------------------------------------------------------------------------------------------------------------------------
+
+$cuentaSinRegistro_tipoCuenta = $balance->extraerCuentaSinRegistro_tipoCuenta($cuentasBalance);
+$cuentasInvalidas = $cuentaSinRegistro_tipoCuenta;
+if(empty(!$cuentaSinRegistro_tipoCuenta)){
+    $mensaje = "Error en el id del tipo de cuenta, registros no encontrados";
+    $error_cuenta = TRUE;   
+    
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
+ //-------------------------------------------------------------------------------------------------------------------------------------
+ 
+ $arraySaldosInvalidos = $balance->extraerCuentaSaldosInvalidosImport($cuentasBalance);
+ $cuentasInvalidas = $arraySaldosInvalidos;
+ if(empty(!$arraySaldosInvalidos)){
+    $mensaje = "Error en el saldo de la cuenta, uno o mas saldos son invalidos";
+    $error_cuenta = TRUE;   
+    
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
+// dd($BalanceImportadoView);
+//Si no hay errores en las cuentas
+ return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
      
     }
 
