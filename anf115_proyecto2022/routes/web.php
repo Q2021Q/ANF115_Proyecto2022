@@ -44,5 +44,15 @@ route::get('ImporformBalanceGeneral',[CuentaGeneralController::class,'importarBa
 route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance'])->name('importar_balance');
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+
+Route::get('graficos', [CuentaGeneralController::class, 'index']);
+
+Route::get('/empresa', function () {
+    return view('GuardarEmpresaView');
+});
+
+Route::get('/importar', function () {
+    return view('ImportarBalanceGeneralView');
 });
