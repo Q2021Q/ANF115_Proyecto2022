@@ -220,6 +220,14 @@ class CuentaGeneralController extends Controller
      
     }
 
-   
+   public function index(){
+        $datos = Cuentageneral::all();
+
+        $puntos = [];
+        foreach($datos as $dato){
+            $puntos[] = ['name' => $dato['CODIGOCUENTA'], 'y' => floatval($dato['SALDO'])];
+        }
+        return view("Graficos", ["data" => json_encode($puntos)]);
+   }
     
 }
