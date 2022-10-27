@@ -14,6 +14,7 @@ use App\Models\Catalogo;//Modelo, para CURD de la Catalogo
 use App\Models\Cuentaratio;//Modelo, para CURD en la tabla Cuentaratio
 use App\Models\Tipocuentum;
 use App\Models\Periodocontable;
+use App\Models\Cuentapuente;
 
 use App\views\importarBalanceGeneralView;
 
@@ -358,9 +359,17 @@ class CuentaGeneralController extends Controller
 {
     public function  importarBalanceGeneral(){
 
+        $arrayPeriodos = array();
+
         $periodosContables = Periodocontable::select(['year'])->where('idempresa', '=', "epA")->get();
+        foreach($periodosContables as $periodo){
+            $consultaCatalogo = Cuentageneral::where('year', '=', $periodo->year)->get();
+            if($consultaCatalogo->isEmpty()){
+                array_push($arrayPeriodos, $periodo);
+            }
+        }
         //dd($periodosContables);
-        return view('importarBalanceGeneralView', compact('periodosContables'));
+        return view('importarBalanceGeneralView', compact('arrayPeriodos'));
     }
 
     public function importarBalance(Request $request){
@@ -460,6 +469,15 @@ try {
             $cuentaGeneral->saldo = $elemento->get_saldoCuenta();
            // echo "*-*-";
             $cuentaGeneral->save();
+
+            if(empty(!($elemento->get_codigoCuentaRatio()))){
+              $cuentaPuente = new Cuentapuente();
+              $cuentaPuente->codcuentaratio = $elemento->get_codigoCuentaRatio();
+              $cuentaPuente->year = $request->periodoContable;
+              $cuentaPuente->idempresa = "epA";
+              $cuentaPuente->codigocuenta = $elemento->get_codigoCuenta();
+              $cuentaPuente->save();
+            }
         } 
 
     });

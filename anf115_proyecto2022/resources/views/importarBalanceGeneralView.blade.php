@@ -21,8 +21,8 @@
     <div id = "mostraContenido" style="display: none">
 
     <label >Periodo Contable</label>
-    <select name="periodoContable" id="periodoContable">
-      @foreach ($periodosContables as $periodo)
+    <select name="periodoContable" id="periodoContable" required>
+      @foreach ($arrayPeriodos as $periodo)
       <option value="{{$periodo->year}}">{{$periodo->year}}</option>
       @endforeach
     </select>
