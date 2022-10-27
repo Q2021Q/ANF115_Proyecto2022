@@ -41,6 +41,9 @@ route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa']);
 route::post('guardarEmp',[EmpresaController::class,'guardarEmpresa'])->name('guardar_empresa');
 
 route::get('ImporformBalanceGeneral',[CuentaGeneralController::class,'importarBalanceGeneral']);
+
+route::get('ImporformEstadoResul',[CuentaGeneralController::class,'importarEstadoFinanciero']);
+
 route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance'])->name('importar_balance');
 
 Route::get('/', function () {

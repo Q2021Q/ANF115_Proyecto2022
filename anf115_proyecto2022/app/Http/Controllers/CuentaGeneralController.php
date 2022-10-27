@@ -3,14 +3,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
 
 use App\Models\Cuentageneral;//Modelo, para CURD de la tabla cuentageneral
 
 use App\Models\Catalogo;//Modelo, para CURD de la Catalogo
 
-use App\Models\Cuentaratio;//Modelo, para CURD de la Catalogo
+use App\Models\Cuentaratio;//Modelo, para CURD en la tabla Cuentaratio
 use App\Models\Tipocuentum;
+use App\Models\Periodocontable;
+
+use App\views\importarBalanceGeneralView;
 
 
 
@@ -293,74 +298,79 @@ public  function extraerCuentaSaldosInvalidosImport($cuentaBalance): array{
             }
     }   
     return $cuentaBalance;
- }
+}
+
+//******************************************************************************************************************** */
+public function extraerElementosArchivo_CSV($BalanceGeneral): array{
+
+    $cuentasBalance = array();
+    
+    $fila = 1;
+    if (($balance = fopen($BalanceGeneral,"r")) !== FALSE) {
+        while (($datos = fgetcsv($balance, 1000, ",")) !== FALSE) {
+
+            $balanceG = new BalanceG();
+
+            $numero = count($datos);
+
+           
+           // echo "<p> $numero de campos en la línea $fila: <br /></p>\n";
+            $fila++;
+            for ($c=0; $c < $numero; $c++) {
+                switch ($c) {
+                    case 0:
+                        $balanceG->set_codigoCuenta(trim($datos[$c], ' ;*,'));//
+                       // echo $datos[$c] . "<br />\n";
+                        break;
+                    case 1:
+                        $balanceG->set_tipoCuenta(trim($datos[$c], ' ;*,'));//
+                        // echo $datos[$c] . "<br />\n";
+                        break;
+                    case 2:
+                        $balanceG->set_nombreCuenta(trim($datos[$c], ' ;*,'));
+                       // echo $datos[$c] . "<br />\n";
+                        break;
+                    case 3:
+                        $balanceG->set_saldoCuenta(trim($datos[$c], ' ;*,'));
+                       // echo $datos[$c] . "<br />\n";
+                        break;
+                    case 4:
+                        if($datos[$c] == NULL)
+                             $balanceG->set_codigoCuentaRatio("No");
+                        else 
+                             $balanceG->set_codigoCuentaRatio(trim($datos[$c], ' ;*,'));    
+                           // echo $datos[$c] . "<br />\n";
+                         break;    
+                }
+                
+            }
+        array_push($cuentasBalance, $balanceG);
+        }
+        fclose($balance);
+    }
+return $cuentasBalance;
+}
+//************************************************************************************************************************************************** */
 
 }
 
 class CuentaGeneralController extends Controller
 {
     public function  importarBalanceGeneral(){
-        return view('importarBalanceGeneralView');
+
+        $periodosContables = Periodocontable::select(['year'])->where('idempresa', '=', "epA")->get();
+        //dd($periodosContables);
+        return view('importarBalanceGeneralView', compact('periodosContables'));
     }
 
     public function importarBalance(Request $request){
-
+       //dd($request->codigoEmpresa);
         $cuentaGeneral = new Cuentageneral();
-
-        
-        $cuentasBalance = array();
-
-        $BalanceGeneral = $request->balance;  
-        
-        $fila = 1;
-        if (($balance = fopen($BalanceGeneral,"r")) !== FALSE) {
-            while (($datos = fgetcsv($balance, 1000, ",")) !== FALSE) {
-
-                $balanceG = new BalanceG();
-
-                $numero = count($datos);
-
-               
-               // echo "<p> $numero de campos en la línea $fila: <br /></p>\n";
-                $fila++;
-                for ($c=0; $c < $numero; $c++) {
-                    switch ($c) {
-                        case 0:
-                            $balanceG->set_codigoCuenta(trim($datos[$c], ' ;*,'));//
-                           // echo $datos[$c] . "<br />\n";
-                            break;
-                        case 1:
-                            $balanceG->set_tipoCuenta(trim($datos[$c], ' ;*,'));//
-                            // echo $datos[$c] . "<br />\n";
-                            break;
-                        case 2:
-                            $balanceG->set_nombreCuenta(trim($datos[$c], ' ;*,'));
-                           // echo $datos[$c] . "<br />\n";
-                            break;
-                        case 3:
-                            $balanceG->set_saldoCuenta(trim($datos[$c], ' ;*,'));
-                           // echo $datos[$c] . "<br />\n";
-                            break;
-                        case 4:
-                            if($datos[$c] == NULL)
-                                 $balanceG->set_codigoCuentaRatio("No");
-                            else 
-                                 $balanceG->set_codigoCuentaRatio(trim($datos[$c], ' ;*,'));    
-                               // echo $datos[$c] . "<br />\n";
-                             break;    
-                    }
-                    
-                }
-            array_push($cuentasBalance, $balanceG);
-            }
-            fclose($balance);
-        }
-
         
         $balance = new BalanceG();
-     
+        $BalanceGeneral = $request->balance;  
        // dd($cuentas_repetidas);
-
+       $cuentasBalance = $balance->extraerElementosArchivo_CSV($BalanceGeneral);
        $cuentasBalance = $balance->setNombreCuentaRatio($cuentasBalance);
        $cuentasBalance = $balance->setNombreTipoCuenta($cuentasBalance);
        $cuentasBalance = $balance->setReasignarCamposVacios_finla($cuentasBalance);
@@ -434,10 +444,35 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
    }
 //Si no hay errores en las cuentas
 $indicadorEstadoFinanciero = $request->indicadorEstadoFinanciero;
-//dd($indicadorEstadoFinanciero);
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+try {
+
+     DB::transaction(function () use ($cuentasBalance, $request){
+        
+        foreach($cuentasBalance as $elemento) { 
+            $cuentaGeneral = new Cuentageneral();
+            $cuentaGeneral->codigocuenta = $elemento->get_codigoCuenta();
+            $cuentaGeneral->idempresa = "epA";
+            $cuentaGeneral->year = $request->periodoContable;
+            $cuentaGeneral->idtipocuenta = $elemento->get_tipoCuenta();
+            $cuentaGeneral->saldo = $elemento->get_saldoCuenta();
+           // echo "*-*-";
+            $cuentaGeneral->save();
+        } 
+
+    });
+   
+} catch (\Exception $e) {
+    return response()->json(['message' => 'Error']);
+}
+
+
+//--------------------------------------------------------------------------------------------------------------------------------- */
  return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
      
-    }
+}
 
    public function index(){
         $datos = Cuentageneral::all();
