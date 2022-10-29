@@ -18,12 +18,11 @@ class CreateCuentageneralTable extends Migration
             $table->char('IDEMPRESA', 10);
             $table->char('CODIGOCUENTA', 15);
             $table->integer('IDTIPOCUENTA')->index('FK_RELATIONSHIP_6');
+            $table->integer('IDTIPOESTADOFINANCIERO')->nullable()->index('FK_REFERENCE_11');
             $table->decimal('SALDO', 12, 2);
             
             $table->primary(['YEAR', 'IDEMPRESA', 'CODIGOCUENTA']);
             $table->index(['IDEMPRESA', 'CODIGOCUENTA'], 'FK_RELATIONSHIP_10');
-
-            $table->integer('IDTIPOESTADOFINANCIERO')->index('FK_RELATIONSHIP_12');
         });
     }
 

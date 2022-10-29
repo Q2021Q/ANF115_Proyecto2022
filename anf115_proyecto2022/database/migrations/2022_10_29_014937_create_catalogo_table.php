@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipoestadofinancieroTable extends Migration
+class CreateCatalogoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateTipoestadofinancieroTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipoestadofinanciero', function (Blueprint $table) {
-            $table->integer('IDTIPOESTADOFINANCIERO')->primary();
-            $table->string('NOMBREESTADOFINANCIERO', 50);
+        Schema::create('catalogo', function (Blueprint $table) {
+            $table->char('IDEMPRESA', 10);
+            $table->char('CODIGOCUENTA', 15);
+            $table->string('NOMBRECUENTA', 50);
+            
+            $table->primary(['IDEMPRESA', 'CODIGOCUENTA']);
         });
     }
 
@@ -26,6 +29,6 @@ class CreateTipoestadofinancieroTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tipoestadofinanciero');
+        Schema::dropIfExists('catalogo');
     }
 }

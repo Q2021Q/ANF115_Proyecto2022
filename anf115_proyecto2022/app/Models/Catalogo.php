@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
  * 
  * @property string $IDEMPRESA
  * @property string $CODIGOCUENTA
- * @property int $IDTIPOESTADOFINANCIERO
  * @property string $NOMBRECUENTA
  *
  * @package App\Models
@@ -24,12 +23,7 @@ class Catalogo extends Model
 	public $incrementing = false;
 	public $timestamps = false;
 
-	protected $casts = [
-		'IDTIPOESTADOFINANCIERO' => 'int'
-	];
-
 	protected $fillable = [
-		'IDTIPOESTADOFINANCIERO',
 		'NOMBRECUENTA'
 	];
 }

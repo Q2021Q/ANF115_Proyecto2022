@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $IDEMPRESA
  * @property string $CODIGOCUENTA
  * @property int $IDTIPOCUENTA
+ * @property int|null $IDTIPOESTADOFINANCIERO
  * @property float $SALDO
  *
  * @package App\Models
@@ -27,11 +28,13 @@ class Cuentageneral extends Model
 
 	protected $casts = [
 		'IDTIPOCUENTA' => 'int',
+		'IDTIPOESTADOFINANCIERO' => 'int',
 		'SALDO' => 'float'
 	];
 
 	protected $fillable = [
 		'IDTIPOCUENTA',
+		'IDTIPOESTADOFINANCIERO',
 		'SALDO'
 	];
 }

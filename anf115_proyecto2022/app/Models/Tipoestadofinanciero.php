@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * Class Tipoestadofinanciero
  * 
  * @property int $IDTIPOESTADOFINANCIERO
- * @property string $NOMBREESTADOFINANCIERO
+ * @property string|null $NOMBREESTADOFINANCIERO
  *
  * @package App\Models
  */
