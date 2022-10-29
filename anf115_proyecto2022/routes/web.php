@@ -6,8 +6,10 @@ use App\Http\Controllers\CuentaGeneralController;
 
 //nombreURL es cualquier nombre, con este se accede desde el navegador
 //el nombre (nombreURL) NO ESTA relacionado con ningun archivo del proyecto
+
 //          nombreURL              controlador ----------->//nobre de lafuncion dentro del controlador
 route::get('Empresa_View/{a}/{b}',[EmpresaController::class,'viewEmpresa']);
+
 //route::get('Empresa_View',[EmpresaController::class,'mensaje']);
 route::get('mensaje',[EmpresaController::class,'mensaje']);
 
