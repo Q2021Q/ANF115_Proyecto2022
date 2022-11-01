@@ -1,78 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
+    
+@section('menu')
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link">
+      <img src="{{ asset('vendors/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">SisCont_ANF-2022</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{{ asset('vendors/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">Solo William trabaja</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <div>
+            <!-- <a href="{{route('empresa_insert')}}" class="btn btn-primary">Agregar Empresa</a> -->
+        </div>
+        </ul>
+      </nav>  <!-- /.sidebar-menu -->
+    </div>  <!-- /.sidebar -->
+</aside>
+
+@endsection
+
+@section('content')
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestióon de archivos</title>
+    <title>Insert Empresa</title>
 </head>
 <body>
 
-<form action="{{route('importar_balance')}}" method = "POST" enctype="multipart/form-data">
+    <form action="{{route('guardar_empresa_e')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
-   
-    <h1>Gestión de archivos</h1>
 
-<h2>Seleccionar para mostrar inmediatamente</h2>
-<p>Selecciona el archivo a mostrar</p>
 
-<!-- <input type="file" id="archivo1" /> -->
-<input type="file" name="archivo2" id="archivo2"  />
-<h4>Contenido del archivo:</h4>
-<pre id="contenido-archivo"></pre>
-
-<!-- style="display: none" -->
-    <!-- value="Cargar Balance" id="activar" -->
-  <div id = "mostraContenido" >
-          <input type="submit" >
-    </div>
-</form>
-
+    <h2>Agregar Nueva Empresa</h2>
+    <p>Seleccione el archivo</p>
+        <div>
+          <label for="">Codigo Empresa</label>
+          <input type="text" id="idEmpresa" name="idEmpresa" required>
+          <br> 
+          <br> 
+          <label for="">Nombre Empresa</label>
+          <input type="text" id="nomEmpresa" name="nomEmpresa" required>
+          <br> 
+          <br> 
+          <label >Sector de la Empresa</label>
+          <select name="rubroEmpresa" id="rubroEmpresa" required>
+            @foreach ($rubroEmpresa as $rubro)
+            <option value="{{$rubro->IDRUBROEMPRESA}}">{{$rubro->NOMBRERUBROEMPRESA}}</option>
+            @endforeach
+          </select>
+          <br> 
+          <br> 
+          <input type="file" name="imagen" id="imagen" onchange="return validarExt()" />
+        <br> 
+        <br> 
+        </div>
+  
+    <div id = "mostraContenido" style="display: none">
+      <input type="submit" value="Guardar Empresa" >
+      <img src="{{ asset('imagenes/cargaImagen.png') }}" alt="" class="imgPerfil" width="200" height="200">
+    </div>              <!--  Ancho -->
+    </form>
 </body>
+
 <script>
+ 
 
-
-
-    /**
-    * Importar y operar con .csv
-    **/
+ //Esta funcion valida la extencion del archivo
+function validarExt()
+{
+    var archivoInput = document.getElementById('imagen');
    
-    /**
-     * Leer y mostrar contenido inmediatamente
-    **/  
-   //********************************************************************** */
-    function mostrarContenido(contenido) {
-        
-    var archivoInput = document.getElementById('archivo2');
-      var archivoRuta = archivoInput.value;
-      console.log(archivoRuta);
-        const elemento = document.getElementById('contenido-archivo');
-        elemento.innerHTML = contenido;
-        const link = document.getElementById('mostraContenido');
-        for(let i = 0; i < 5; i++) {
-        link.click();
+    var archivoRuta = archivoInput.value;
+    console.log(archivoRuta);
+    var extPermitidas = /(.jpg|.jpeg|.png|.gif|.JPG|.JPEG|.PNG|.GIF)$/i;
+    if(!extPermitidas.exec(archivoRuta)){
+        alert('Extencion de archivo incorrecta');
+        archivoInput.value = '';
+        document.getElementById('mostraContenido').style.display = 'none';
+        return false;
     }
-      }
-//******************************************************************************** */
+    else
+    {
+      document.getElementById('mostraContenido').style.display = ''; 
+      return true;
+    }
+}
 
-    function leerArchivo(e) {
-      const archivo = e.target.files[0];
-      if (!archivo) {
-        return;
-      }
-      var archivoInput = document.getElementById('archivo2');
-      var archivoRuta = archivoInput.value;
-      console.log(archivoRuta);
-      const lector = new FileReader();
-      lector.onload = function(e) {
-        const contenido = e.target.result;
-        mostrarContenido(contenido);
-      };
-      lector.readAsText(archivo);
-    }
-//************************************************************ */
-    document.querySelector('#archivo2')
-      .addEventListener('change', leerArchivo, false);
-//      
-  </script>
-</html>
+
+  if(window.history && history.pushState){ // check for history api support
+	window.addEventListener('load', function(){
+		document.getElementById("cargaFile").reset();   
+	}, false);
+}
+//******************************************************************************** */
+</script>
+@endsection
