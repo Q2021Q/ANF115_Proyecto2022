@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CuentaGeneralController;
 use App\Http\Controllers\CatalogoImportController;
@@ -18,8 +17,6 @@ use App\Http\Controllers\CatalogoImportController;
 */
 
 //nombreURL es cualquier nombre, con este se accede desde el navegador
-
-
 //el nombre (nombreURL) NO ESTA relacionado con ningun archivo del proyecto
 
 //          nombreURL              controlador ----------->//nobre de lafuncion dentro del controlador
@@ -44,7 +41,7 @@ route::get('ImporformEstadoResul/{idEmpresa}',[CuentaGeneralController::class,'i
 
 route::get('ImporformCatalogo/{idEmpresa}',[CatalogoImportController::class,'importarCatalogo'])->name('importar_catalogo');
 
-route::get('empresaHome',[EmpresaController::class,'empresaHomeView'])->name('home_empresa');
+route::get('/',[EmpresaController::class,'empresaHomeView'])->name('home_empresa');
 
 
 route::get('gestionarEmpresaRedirec/{idEmpresa}',[EmpresaController::class,'apartadoEmpresaRedirec'])->name('EmpresaGestion_redirec');
@@ -64,10 +61,10 @@ route::post('importarCatalogoCsv',[CatalogoImportController::class,'importarCata
 ////****************************************************** */
 //route::post('gestionEmpresa',[EmpresaController::class,'opcionFuncionEmpresa'])->name('gestionar_empresa');
 
-Route::get('/', function () {
-    return view('index');
-});
-/*----------------------------------------------------------------------------------------------------------------------------------------------------*/
+// Route::get('/', function () {
+//     return view('index');
+// });
+// /*----------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 Route::get('/empresa', function () {
     return view('GuardarEmpresaView');

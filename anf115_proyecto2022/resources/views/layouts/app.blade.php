@@ -10,7 +10,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{ asset('vendors/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('vendors/dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/dist/css/adminlte.css') }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -18,14 +18,22 @@
 <!-- -----------------------------------------------Top Menu start -->
 @include('layouts.topMenu')
 <!-- -----------------------------------------------Left Menu start -->
-@include('layouts.leftMenu')
+
+
+<!-- Left Menu start -->
+<section class="menu">
+@yield('menu')
+  
+</section>
+
+<!-- Left Menu end -->
 <!-- -----------------------------------------------Main Content (Body) -->
   <div class="content-wrapper">
     <!-- Main Content -->
     <section class='content'>
         @yield('content')
+      </div> <!-- /.content-wrapper -->
     </section>
-  </div> <!-- /.content-wrapper -->
 
   <!-- ------------------------------------------------Right Menu Start -->
   @include('layouts.rightMenu')
