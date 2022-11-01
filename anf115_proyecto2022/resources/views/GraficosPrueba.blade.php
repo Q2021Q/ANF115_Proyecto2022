@@ -30,7 +30,6 @@
       </nav>  <!-- /.sidebar-menu -->
     </div>  <!-- /.sidebar -->
 </aside>
-
 @endsection
 
 @section('content')
@@ -49,6 +48,7 @@
                         <div>
                             <input type="text" name="txtnom" id="txtnom" class="form-control" placeholder="Buscar dato " value="">
                         </div>
+                        <h2>Importar Estado de Resultado para {{$nameEmpresa}}</h2>
                     </div>
                 </div>
             </div>
