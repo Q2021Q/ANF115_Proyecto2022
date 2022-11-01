@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CuentaGeneralController;
+use App\Http\Controllers\CatalogoImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,7 @@ route::get('ImporformBalanceGeneral/{idEmpresa}',[CuentaGeneralController::class
 
 route::get('ImporformEstadoResul/{idEmpresa}',[CuentaGeneralController::class,'importarEstadoResultado'])->name('importar_estado_resultados');
 
+route::get('ImporformCatalogo/{idEmpresa}',[CatalogoImportController::class,'importarCatalogo'])->name('importar_catalogo');
 
 route::get('empresaHome',[EmpresaController::class,'empresaHomeView'])->name('home_empresa');
 
@@ -56,7 +58,10 @@ route::get('importarBalanceRedi/{cuentasBalance1}',[CuentaGeneralController::cla
 route::post('guardarEmp',[EmpresaController::class,'guardarEmpresa'])->name('guardar_empresa_e');
 
 route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance'])->name('importar_balance');
-
+////////////*******************
+//---------------------------------------------
+route::post('importarCatalogoCsv',[CatalogoImportController::class,'importarCatalogoCSV'])->name('importarCatalogo_CSV');
+////****************************************************** */
 //route::post('gestionEmpresa',[EmpresaController::class,'opcionFuncionEmpresa'])->name('gestionar_empresa');
 
 Route::get('/', function () {

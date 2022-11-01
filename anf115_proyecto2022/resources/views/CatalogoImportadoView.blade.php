@@ -11,8 +11,9 @@
 
 <h1>{{$nomE}}</h1>
 
-    <h2>Balance General</h2>
-
+    <h2>Catalogo de Cuentas</h2>
+  
+    
 <?php
     $mensaje_error_si_no = '';
     $sms = $mensaje;
@@ -32,12 +33,9 @@
 ?>
     <table border="1">
             <tr>
-                <th>Codigo de la cuenta</th>
-                <th>Tipo de cuenta</th>
-                <th>Nombre de la cuenta</th>
-                <th>Saldo de la cuenta</th>
-                <th>Cuenta de ratio</th>
-               
+            <th>Codigo de de la cuenta</th>      
+            <th>Nombre de la cuenta</th
+                           
             </tr>
 
             <?php
@@ -69,11 +67,8 @@
         //Concatenamos las tablas en una variable, también podriamos hacer el "echo" directamente
       
         $concat .= '<td >' .$balance->get_codigoCuenta() .'</td>';
-        $concat .= '<td>' . $balance->get_nombreTipoCuenta() .'</td>';
         $concat .= '<td>' . $balance->get_nombreCuenta() .'</td>';
-        $concat .= '<td>' . $balance->get_saldoCuenta() .'</td>';
-        $concat .= '<td>' . $balance->get_nombreCuentaRatio() .'</td>';
-    
+        
         $concat .= '</tr>';
     }
 
