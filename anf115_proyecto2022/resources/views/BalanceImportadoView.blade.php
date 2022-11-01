@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
-<<<<<<< HEAD
 <h1>{{$nomE}}</h1>
 
-=======
+
 @section('menu')
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -38,8 +37,12 @@
 @endsection
 
 @section('content')
->>>>>>> 5493625c95ae7d98634330fef8236d2cb41c420e
-    <h2>Balance General</h2>
+
+
+   
+    <h2>{{$nombreEstado}}</h2>
+   
+    
 
 <?php
     $mensaje_error_si_no = '';
