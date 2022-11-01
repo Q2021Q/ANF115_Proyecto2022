@@ -1,78 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestióon de archivos</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert Empresa</title>
 </head>
 <body>
-
-<form action="{{route('importar_balance')}}" method = "POST" enctype="multipart/form-data">
+<a href="{{route('home_empresa')}}">HOME</a>
+    <form action="{{route('guardar_empresa_e')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
-   
-    <h1>Gestión de archivos</h1>
-
-<h2>Seleccionar para mostrar inmediatamente</h2>
-<p>Selecciona el archivo a mostrar</p>
-
-<!-- <input type="file" id="archivo1" /> -->
-<input type="file" name="archivo2" id="archivo2"  />
-<h4>Contenido del archivo:</h4>
-<pre id="contenido-archivo"></pre>
-
-<!-- style="display: none" -->
-    <!-- value="Cargar Balance" id="activar" -->
-  <div id = "mostraContenido" >
-          <input type="submit" >
-    </div>
-</form>
-
-</body>
-<script>
 
 
-
-    /**
-    * Importar y operar con .csv
-    **/
-   
-    /**
-     * Leer y mostrar contenido inmediatamente
-    **/  
-   //********************************************************************** */
-    function mostrarContenido(contenido) {
+    <h2>Agregar Nueva Empresa</h2>
+    <p>Seleccione el archivo</p>
         
-    var archivoInput = document.getElementById('archivo2');
-      var archivoRuta = archivoInput.value;
-      console.log(archivoRuta);
-        const elemento = document.getElementById('contenido-archivo');
-        elemento.innerHTML = contenido;
-        const link = document.getElementById('mostraContenido');
-        for(let i = 0; i < 5; i++) {
-        link.click();
-    }
-      }
-//******************************************************************************** */
+    
+        <div>
+          <label for="">Codigo Empresa</label>
+          <input type="text" id="idEmpresa" name="idEmpresa" required>
+          <br> 
+          <br> 
+          <label for="">Nombre Empresa</label>
+          <input type="text" id="nomEmpresa" name="nomEmpresa" required>
+          <br> 
+          <br> 
+          <label >Sector de la Empresa</label>
+          <select name="rubroEmpresa" id="rubroEmpresa" required>
+            @foreach ($rubroEmpresa as $rubro)
+            <option value="{{$rubro->IDRUBROEMPRESA}}">{{$rubro->NOMBRERUBROEMPRESA}}</option>
+            @endforeach
+          </select>
+          <br> 
+          <br> 
+          <input type="file" name="imagen" id="imagen" onchange="return validarExt()" />
+        <br> 
+        <br> 
+        </div>
+  
+    <div id = "mostraContenido" style="display: none">
+      <input type="submit" value="Guardar Empresa" >
+      <img src="{{ asset('imagenes/cargaImagen.png') }}" alt="" class="imgPerfil" width="200" height="200">
+    </div>              <!--  Ancho -->
+    </form>
+</body>
 
-    function leerArchivo(e) {
-      const archivo = e.target.files[0];
-      if (!archivo) {
-        return;
-      }
-      var archivoInput = document.getElementById('archivo2');
-      var archivoRuta = archivoInput.value;
-      console.log(archivoRuta);
-      const lector = new FileReader();
-      lector.onload = function(e) {
-        const contenido = e.target.result;
-        mostrarContenido(contenido);
-      };
-      lector.readAsText(archivo);
+<script>
+ 
+
+ //Esta funcion valida la extencion del archivo
+function validarExt()
+{
+    var archivoInput = document.getElementById('imagen');
+   
+    var archivoRuta = archivoInput.value;
+    console.log(archivoRuta);
+    var extPermitidas = /(.jpg|.jpeg|.png|.gif|.JPG|.JPEG|.PNG|.GIF)$/i;
+    if(!extPermitidas.exec(archivoRuta)){
+        alert('Extencion de archivo incorrecta');
+        archivoInput.value = '';
+        document.getElementById('mostraContenido').style.display = 'none';
+        return false;
     }
-//************************************************************ */
-    document.querySelector('#archivo2')
-      .addEventListener('change', leerArchivo, false);
-//      
-  </script>
+    else
+    {
+      document.getElementById('mostraContenido').style.display = ''; 
+      return true;
+    }
+}
+
+
+  if(window.history && history.pushState){ // check for history api support
+	window.addEventListener('load', function(){
+		document.getElementById("cargaFile").reset();   
+	}, false);
+}
+//******************************************************************************** */
+</script>
+
 </html>
