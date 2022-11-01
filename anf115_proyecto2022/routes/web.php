@@ -50,12 +50,20 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('graficos', [CuentaGeneralController::class, 'index']);
-
 Route::get('/empresa', function () {
     return view('GuardarEmpresaView');
 });
 
 Route::get('/importar', function () {
     return view('ImportarBalanceGeneralView');
+});
+
+Route::get('graficas', [CuentaGeneralController::class, 'index']);
+
+Route::get('/graficasc', function () {
+    return view('graficoConsultas');
+});
+
+Route::get('/graficasp', function () {
+    return view('graficosPrueba');
 });
