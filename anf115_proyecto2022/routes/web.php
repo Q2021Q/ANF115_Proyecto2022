@@ -39,7 +39,7 @@ route::get('ImporformBalanceGeneral/{idEmpresa}',[CuentaGeneralController::class
 route::get('ImporformEstadoResul/{idEmpresa}',[CuentaGeneralController::class,'importarEstadoResultado'])->name('importar_estado_resultados');
 
 
-route::get('empresaHome',[EmpresaController::class,'empresaHomeView'])->name('home_empresa');
+route::get('/',[EmpresaController::class,'empresaHomeView'])->name('home_empresa');
 
 
 route::get('gestionarEmpresaRedirec/{idEmpresa}',[EmpresaController::class,'apartadoEmpresaRedirec'])->name('EmpresaGestion_redirec');
@@ -56,10 +56,10 @@ route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance
 
 //route::post('gestionEmpresa',[EmpresaController::class,'opcionFuncionEmpresa'])->name('gestionar_empresa');
 
-Route::get('/', function () {
-    return view('index');
-});
-/*----------------------------------------------------------------------------------------------------------------------------------------------------*/
+// Route::get('/', function () {
+//     return view('index');
+// });
+// /*----------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 Route::get('/empresa', function () {
     return view('GuardarEmpresaView');
