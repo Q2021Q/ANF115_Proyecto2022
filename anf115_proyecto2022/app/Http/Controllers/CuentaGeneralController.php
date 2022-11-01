@@ -15,6 +15,8 @@ use App\Models\Cuentaratio;//Modelo, para CURD en la tabla Cuentaratio
 use App\Models\Tipocuentum;
 use App\Models\Periodocontable;
 use App\Models\Cuentapuente;
+use App\Models\Empresa;
+
 
 use App\views\importarBalanceGeneralView;
 use App\views\ImportarEstadoResultadoView;
@@ -327,6 +329,27 @@ public  function getCuentasExistenteCuentaPunte($cuentaBalance, $year, $idempres
     return $arrayCuentaPuenteExistenteBD;
 }
 
+
+public  function getCuentasGeneralExistente($cuentaBalance, $year, $idempresa): array{  
+
+    $arrayCuentaGeneralExistenteBD = array();
+
+    for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) { 
+
+        $codigoCuenta = $cuentaBalance[$j]->get_codigoCuenta();
+       
+       $cuentaGeneral = Cuentageneral::where('codigocuenta' , '=', $codigoCuenta)
+                                   ->where('year', '=', $year)
+                                   ->where('idempresa', '=', $idempresa)->get();
+
+             if (!$cuentaGeneral->isEmpty()) {
+                $arrayCuentaGeneralExistenteBD[$j] = $codigoCuenta;
+                 //echo "--*--";
+            }
+    }   
+    return $arrayCuentaGeneralExistenteBD;
+}
+
 //******************************************************************************************************************** */
 public function extraerElementosArchivo_CSV($BalanceGeneral): array{
 
@@ -383,23 +406,34 @@ return $cuentasBalance;
 
 class CuentaGeneralController extends Controller
 {
-    public function  importarBalanceGeneral(){
+    public function  importarBalanceGeneral($idEmpresa){
 
+try {
+    
         $arrayPeriodos = array();
 
-        $periodosContables = Periodocontable::select(['year'])->where('idempresa', '=', "epA")->get();
+        $periodosContables = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+        $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idempresa', '=', $idEmpresa)->get();
+
+        $nameEmpresa = $nombreEmpresa[0]->nombreempresa;
+
         foreach($periodosContables as $periodo){
-            $consultaCatalogo = Cuentageneral::where('year', '=', $periodo->year)->get();
-            if($consultaCatalogo->isEmpty()){
-                array_push($arrayPeriodos, $periodo);
-            }
+            array_push($arrayPeriodos, $periodo->year);
         }
-        //dd($periodosContables);
-        return view('importarBalanceGeneralView', compact('arrayPeriodos'));
+        
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Error']);
+    }
+    
+        return view('importarBalanceGeneralView', compact('arrayPeriodos','idEmpresa', 'nameEmpresa'));
     }
 //--------------------------------------------------------------------------------------------------------------------
     public function importarBalance(Request $request){
-       //($request);
+       //dd($request);
+
+        $year = $request->periodoContable;
+        $idEmpresa = $request->idEmpresa;
+
         $cuentaGeneral = new Cuentageneral();
         
         $balance = new BalanceG();
@@ -478,11 +512,22 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
    }
 //Si no hay errores en las cuentas
-$indicadorEstadoFinanciero = $request->indicadorEstadoFinanciero;
+
+//--------------------------------------------------------------------------------------------------------------------------------
+
+
+$CuentasGeneralExistente = $balance->getCuentasGeneralExistente($cuentasBalance, $year, $idEmpresa);
+$cuentasInvalidas = $CuentasGeneralExistente;
+if(empty(!$CuentasGeneralExistente)){
+    $mensaje = "¡ Intenta ingresar cuentas ya existentes !, revise el archivo porfavor";
+    $error_cuenta = TRUE;   
+    
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+   }
+
 //------------------------------------------------------------------------------------------------------------------------------------------*/
 
-$year = $request->periodoContable;
-$idEmpresa = $request->idEmpresa;
+
 $arrayCuentaPuenteDuplicacadaBD = $balance->getCuentasExistenteCuentaPunte($cuentasBalance, $year, $idEmpresa);
 $cuentasInvalidas = $arrayCuentaPuenteDuplicacadaBD;
 if(empty(!$arrayCuentaPuenteDuplicacadaBD)){
@@ -493,10 +538,11 @@ if(empty(!$arrayCuentaPuenteDuplicacadaBD)){
    }
 //-------------------------------------------------------------------------------------------------------------------------------
 
-//try {
+try {
+    $indicadorEstadoFinanciero = $request->indicadorEstadoFinanciero;
+
 
      DB::transaction(function () use ($cuentasBalance, $request){
-        
         foreach($cuentasBalance as $elemento) { 
             $cuentaGeneral = new Cuentageneral();
             $cuentaGeneral->codigocuenta = $elemento->get_codigoCuenta();
@@ -504,6 +550,7 @@ if(empty(!$arrayCuentaPuenteDuplicacadaBD)){
             $cuentaGeneral->year = $request->periodoContable;
             $cuentaGeneral->idtipocuenta = $elemento->get_tipoCuenta();
             $cuentaGeneral->saldo = $elemento->get_saldoCuenta();
+            $cuentaGeneral->idtipoestadofinanciero = $request->indicadorTipoEF;
            // echo "*-*-";
             $cuentaGeneral->save();
 
@@ -519,41 +566,47 @@ if(empty(!$arrayCuentaPuenteDuplicacadaBD)){
 
     });
    
-// } catch (\Exception $e) {
-//     return response()->json(['message' => 'Error']);
-// }
+} catch (\Exception $e) {
+    return response()->json(['message' => 'Error']);
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------- */
- return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
+
+//return redirect()->route('importarBalance_Redirec', ['cuentasBalance1' => $cuentasBalance]);
+//return redirect()->route('importarBalance_Redirec', $cuentasBalance, $cuentasInvalidas, $mensaje, $error_cuenta);
+return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta'));
      
 }
 
-//***************************************************************************************************************************** */
-
-// *-*---******************
-// 44444444444444
-// 11111111111
-// 2222222
-// 11111
-// 000
-// 9
-
 public function  importarEstadoResultado($idEmpresa){
 
+    try {
+    
+        $arrayPeriodos = array();
 
-    $arrayPeriodos = array();
+        $periodosContables = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+        $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idempresa', '=', $idEmpresa)->get();
 
-    $periodosContables = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+        $nameEmpresa = $nombreEmpresa[0]->nombreempresa;
 
-    foreach($periodosContables as $periodo){
-        array_push($arrayPeriodos, $periodo->year);
+        foreach($periodosContables as $periodo){
+            array_push($arrayPeriodos, $periodo->year);
+        }
+        
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Error']);
     }
-   
-   
-  return view('ImportarEstadoResultadoView', compact('arrayPeriodos','idEmpresa'));
+    
+        return view('ImportarEstadoResultadoView', compact('arrayPeriodos','idEmpresa', 'nameEmpresa'));
+
 }
 //**************************************************************************************************************************** */
+ 
 
+public function importarBalanceRedirec($cuentasBalance): array{
+    return "Exito";
+
+}
 
 
 

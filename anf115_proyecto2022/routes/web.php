@@ -33,18 +33,31 @@ route::get('pagoLaboral/{dias}/{salD}',[EmpresaController::class,'pagoLaboral'])
 route::get('salir',[EmpresaController::class,'salir'])->name('salir_salir');//Es la forma de la ruta para redireccionar
 
                                                     //fucion                //En la vista GuardarEmpresaView, entrada en el navegador                                           
-route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa'])->name('guardar_empresa');
+                                                             
+route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa'])->name('empresa_insert');
 
-                                                               
-route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa']);
+
+route::get('ImporformBalanceGeneral/{idEmpresa}',[CuentaGeneralController::class,'importarBalanceGeneral'])->name('importar_balance_get');
+
+route::get('ImporformEstadoResul/{idEmpresa}',[CuentaGeneralController::class,'importarEstadoResultado'])->name('importar_estado_resultados');
+
+
+route::get('empresaHome',[EmpresaController::class,'empresaHomeView'])->name('home_empresa');
+
+
+route::get('gestionarEmpresaRedirec/{idEmpresa}',[EmpresaController::class,'apartadoEmpresaRedirec'])->name('EmpresaGestion_redirec');
+route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa'])->name('empresa_insert');
+route::get('gestionarEmpresa/{idEmpresa}',[EmpresaController::class,'apartadoEmpresa'])->name('EmpresaGestion');
+
+
+route::get('importarBalanceRedi/{cuentasBalance1}',[CuentaGeneralController::class,'importarBalanceRedirec'])->name('importarBalance_Redirec');
+
                                                    //fucion                //En la vista GuardarEmpresaView                                          
-route::post('guardarEmp',[EmpresaController::class,'guardarEmpresa'])->name('guardar_empresa');
-
-route::get('ImporformBalanceGeneral',[CuentaGeneralController::class,'importarBalanceGeneral']);
-
-route::get('ImporformEstadoResul/{idEmpresa}',[CuentaGeneralController::class,'importarEstadoResultado']);
+route::post('guardarEmp',[EmpresaController::class,'guardarEmpresa'])->name('guardar_empresa_e');
 
 route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance'])->name('importar_balance');
+
+//route::post('gestionEmpresa',[EmpresaController::class,'opcionFuncionEmpresa'])->name('gestionar_empresa');
 
 Route::get('/', function () {
     return view('index');

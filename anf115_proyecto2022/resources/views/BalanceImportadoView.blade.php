@@ -7,6 +7,8 @@
     <title>Document</title>
 </head>
 <body>
+<a href="{{route('home_empresa')}}">HOME</a>
+
     <h1>Balance General</h1>
 
 <?php
@@ -79,9 +81,7 @@
 
 </body>
 <script>
-.bgcolor-red {
-    background-color:red;
-}
+
 </script>
 </html>
 

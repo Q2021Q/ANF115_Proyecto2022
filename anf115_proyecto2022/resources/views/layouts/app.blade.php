@@ -31,6 +31,9 @@
   @include('layouts.rightMenu')
   <!-- ------------------------------------------------Footer -->
   @include('layouts.footer')
+
+  @include('sweetalert::alert')
+
 </div> <!-- ./wrapper -->
 
 <!-- jQuery -->

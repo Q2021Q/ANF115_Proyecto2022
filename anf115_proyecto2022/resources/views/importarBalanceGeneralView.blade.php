@@ -7,23 +7,27 @@
     <title>Carga de archivos</title>
 </head>
 <body>
-  
+<a href="{{route('home_empresa')}}">HOME</a>
     <form action="{{route('importar_balance')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
-    <h2>Importar Balance General para xxyy</h2>
+
+    <input type="text" id="idEmpresa" name="idEmpresa" value = {{$idEmpresa}} style="display: none">
+    <input type="number" id="indicadorTipoEF" name="indicadorTipoEF" value = 1 style="display: none">
+
+    <h2>Importar Balance General para {{$nameEmpresa}}</h2>
     <p>Seleccione el archivo</p>
         <input type="file" name="balance" id="balance" onchange="return validarExt()" />
         <br> 
         <br> 
      
-        <input type="number" id="indicadorEstadoFinanciero" name="indicadorEstadoFinanciero" value="1" style="display: none">
+       
   
     <div id = "mostraContenido" style="display: none">
 
     <label >Periodo Contable</label>
     <select name="periodoContable" id="periodoContable" required>
       @foreach ($arrayPeriodos as $periodo)
-      <option value="{{$periodo->year}}">{{$periodo->year}}</option>
+      <option value="{{$periodo}}">{{$periodo}}</option>
       @endforeach
     </select>
 
@@ -60,7 +64,7 @@ function validarExt()
 
   if(window.history && history.pushState){ // check for history api support
 	window.addEventListener('load', function(){
-		document.getElementById("cargaFile").reset();
+		document.getElementById("cargaFile").reset();   
 	}, false);
 }
 //******************************************************************************** */

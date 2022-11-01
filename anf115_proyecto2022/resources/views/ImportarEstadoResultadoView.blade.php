@@ -7,19 +7,16 @@
     <title>Carga de archivos</title>
 </head>
 <body>
-
-<?php 
-echo $idEmpresa;
-?>
+<a href="{{route('home_empresa')}}">HOME</a>
 
 
     <form action="{{route('importar_balance')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
 
-    <input type="text" id="idEmpresa" name="idEmpresa" value = {{$idEmpresa}} >
-    <input type="number" id="indicadorTipoEF" name="indicadorTipoEF" value = 2 >
+    <input type="text" id="idEmpresa" name="idEmpresa" value = {{$idEmpresa}} style="display: none">
+    <input type="number" id="indicadorTipoEF" name="indicadorTipoEF" value = 2 style="display: none">
 
-    <h2>Importar Estado de Resultado para xxyy</h2>
+    <h2>Importar Estado de Resultado para {{$nameEmpresa}}</h2>
     <p>Seleccione el archivo</p>
         <input type="file" name="balance" id="balance" onchange="return validarExt()" />
         <br> 
