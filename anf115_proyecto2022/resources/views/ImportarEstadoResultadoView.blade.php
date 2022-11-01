@@ -56,7 +56,7 @@
       @endforeach
     </select>
 
-      <input type="submit" value="Cargar Balance" >
+      <input type="submit" value="Cargar Estado R" >
       <img src="{{ asset('imagenes/csv.jpg') }}" alt="" class="imgPerfil" width="200" height="200">
     </div>              <!--  Ancho -->
     </form>

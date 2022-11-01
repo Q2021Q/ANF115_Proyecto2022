@@ -39,24 +39,8 @@
     <form action="">
     <div class="container mt-5">
         <div class="row">
+         
             <div class="col-lg-3" class="card border-secondary mb-3">
-                <div class="card" style="height: 20rem;">
-                    <div class="card" class="card border-primary mb-3">
-                    <div class="card-header text-center">
-                            <p class="h6">Cargar Catalogo de Cuentas</p>
-                        </div>
-                    </div>
-                    <div class="card-body" class="card-body text-secondary">
-                        <a>
-                            <img class="card-img-top" src="{{asset('imagenes/catalogoIMG.png')}}" alt=""
-                                class="img-fluid">
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-3" class="card border-secondary mb-3">
-<<<<<<< HEAD
               <div class="card" style="height: 20rem;">
                       <div class= "card" class="card border-primary mb-3">
                           <div class="card-header">
@@ -87,22 +71,6 @@
                   
               </div>
            </div>
-=======
-                <div class="card" style="height: 20rem;">
-                    <div class="card" class="card border-primary mb-3">
-                    <div class="card-header text-center">
-                    <p class="h6">Cargar Balance General</p>
-                        </div>
-                    </div>
-                    <div class="card-body" class="card-body text-secondary">
-                        <a href="{{route('importar_balance_get', $idEmpresa)}}">
-                            <img class="card-img-top" src="{{asset('imagenes/balanceIMG.png')}}" alt=""
-                                class="img-fluid">
-                        </a>
-                    </div>
-                </div>
-            </div>
->>>>>>> 5493625c95ae7d98634330fef8236d2cb41c420e
 
             <div class="col-lg-3" class="card border-secondary mb-3">
                 <div class="card" style="height: 20rem;">

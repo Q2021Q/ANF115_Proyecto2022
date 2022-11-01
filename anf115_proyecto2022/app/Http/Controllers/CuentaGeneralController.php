@@ -436,6 +436,13 @@ try {
         $nomE = $nombreEmpresa[0]->nombreempresa;
        //dd($request);
 
+       $indicadorEstadoF = $request->indicadorTipoEF;
+       $nombreEstado = "";
+       if($indicadorEstadoF == 1)
+            $nombreEstado = "Balance General";
+        else
+            $nombreEstado = "Estado de Resultados";
+
         $year = $request->periodoContable;
         $idEmpresa = $request->idEmpresa;
 
@@ -460,7 +467,7 @@ if(empty(!$cuentas_sinRegistro)){
     $error_cuenta = TRUE;
     //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
     //$BalanceImportadoView = $balance->asignarCuentaRatio_xKey($cuentasBalance);
-    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
         //dd($cuentas_sinRegistro);
 }
     
@@ -471,7 +478,7 @@ $cuentasInvalidas = $cuentas_repetidas;
 if(empty(!$cuentas_repetidas)){
  $mensaje = "Error en el condigo de cuenta, los codigos deben ser unicos";
  $error_cuenta = TRUE;      
- return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+ return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
 }
 
   //Validacion  
@@ -484,7 +491,7 @@ if(empty(!$cuentas_sinRegistro_ratios)){
     $error_cuenta = TRUE;   
     
      //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
-    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 
 //-------------------------------------------------------------------------------------------------------------------------------
@@ -494,7 +501,7 @@ if(empty(!$cuentas_sinRegistro_ratios)){
     $mensaje = "Error en el condigo de la cuenta ratio, codigos duplicados";
     $error_cuenta = TRUE;   
     
-    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 //--------------------------------------------------------------------------------------------------------------------------------------
 
@@ -504,7 +511,7 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
     $mensaje = "Error en el id del tipo de cuenta, registros no encontrados";
     $error_cuenta = TRUE;   
     
-    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
  //-------------------------------------------------------------------------------------------------------------------------------------
  
@@ -514,7 +521,7 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
     $mensaje = "Error en el saldo de la cuenta, uno o mas saldos son invalidos";
     $error_cuenta = TRUE;   
     
-    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 //Si no hay errores en las cuentas
 
@@ -527,7 +534,7 @@ if(empty(!$CuentasGeneralExistente)){
     $mensaje = "¡ Intenta ingresar cuentas ya existentes !, revise el archivo porfavor";
     $error_cuenta = TRUE;   
     
-    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 
 //------------------------------------------------------------------------------------------------------------------------------------------*/
@@ -539,7 +546,7 @@ if(empty(!$arrayCuentaPuenteDuplicacadaBD)){
     $mensaje = "¡ Intenta ingresar cuentas de razones financieras existentes !, verifique por favor";
     $error_cuenta = TRUE;   
     
-    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+    return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 //-------------------------------------------------------------------------------------------------------------------------------
 
@@ -579,7 +586,7 @@ try {
 
 //return redirect()->route('importarBalance_Redirec', ['cuentasBalance1' => $cuentasBalance]);
 //return redirect()->route('importarBalance_Redirec', $cuentasBalance, $cuentasInvalidas, $mensaje, $error_cuenta);
-return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE'));
+return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
      
 }
 
