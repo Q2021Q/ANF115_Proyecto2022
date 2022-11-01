@@ -10,7 +10,7 @@
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{ asset('vendors/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('vendors/dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('vendors/dist/css/adminlte.css') }}">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
