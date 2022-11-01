@@ -32,7 +32,7 @@ route::get('pagoLaboral/{dias}/{salD}',[EmpresaController::class,'pagoLaboral'])
 
 route::get('salir',[EmpresaController::class,'salir'])->name('salir_salir');//Es la forma de la ruta para redireccionar
 
-                                                    //fucion                //En la vista GuardarEmpresaView, entrada en el navegador                                           
+                    //fucion                //En la vista GuardarEmpresaView, entrada en el navegador                                           
                                                              
 route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa'])->name('empresa_insert');
 
@@ -62,6 +62,7 @@ route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance
 Route::get('/', function () {
     return view('index');
 });
+/*----------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 Route::get('/empresa', function () {
     return view('GuardarEmpresaView');
@@ -71,7 +72,7 @@ Route::get('/importar', function () {
     return view('ImportarBalanceGeneralView');
 });
 
-Route::get('graficas', [CuentaGeneralController::class, 'index']);
+Route::get('/graficas', [CuentaGeneralController::class, 'index']);
 
 Route::get('/graficasc', function () {
     return view('graficoConsultas');

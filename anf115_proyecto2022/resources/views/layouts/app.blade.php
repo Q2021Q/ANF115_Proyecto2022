@@ -14,7 +14,7 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-
+@include('sweetalert::alert')
 <!-- -----------------------------------------------Top Menu start -->
 @include('layouts.topMenu')
 <!-- -----------------------------------------------Left Menu start -->

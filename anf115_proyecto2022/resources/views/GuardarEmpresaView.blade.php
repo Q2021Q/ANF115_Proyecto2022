@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app')
+    
+@section('content')
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert Empresa</title>
 </head>
 <body>
-<a href="{{route('home_empresa')}}">HOME</a>
+
     <form action="{{route('guardar_empresa_e')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
 
@@ -77,5 +75,4 @@ function validarExt()
 }
 //******************************************************************************** */
 </script>
-
-</html>
+@endsection
