@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CuentaGeneralController;
 
@@ -17,8 +16,6 @@ use App\Http\Controllers\CuentaGeneralController;
 */
 
 //nombreURL es cualquier nombre, con este se accede desde el navegador
-
-
 //el nombre (nombreURL) NO ESTA relacionado con ningun archivo del proyecto
 
 //          nombreURL              controlador ----------->//nobre de lafuncion dentro del controlador

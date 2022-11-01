@@ -18,14 +18,22 @@
 <!-- -----------------------------------------------Top Menu start -->
 @include('layouts.topMenu')
 <!-- -----------------------------------------------Left Menu start -->
-@include('layouts.leftMenu')
+
+
+<!-- Left Menu start -->
+<section class="menu">
+@yield('menu')
+  
+</section>
+
+<!-- Left Menu end -->
 <!-- -----------------------------------------------Main Content (Body) -->
   <div class="content-wrapper">
     <!-- Main Content -->
     <section class='content'>
         @yield('content')
+      </div> <!-- /.content-wrapper -->
     </section>
-  </div> <!-- /.content-wrapper -->
 
   <!-- ------------------------------------------------Right Menu Start -->
   @include('layouts.rightMenu')
