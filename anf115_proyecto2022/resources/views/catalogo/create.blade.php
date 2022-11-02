@@ -27,9 +27,10 @@
                                     {!! Form::select('IDEMPRESA',$empresas,null, ['class' => 'form-control']) !!}
                                 </div>
                                 <div class="form-group">
-                                    {!! Form::label('$catalogo->CODIGOCUENTA',"Codigo Cuenta") !!}
-                                    {!! Form::select('CODIGOCUENTA',$cuentas,null, ['class' => 'form-control']) !!}
-                                </div>
+                                    {{ Form::label('CODIGOCUENTA') }}
+                                    {{ Form::text('CODIGOCUENTA', $catalogo->CODIGOCUENTA, ['class' => 'form-control' . ($errors->has('CODIGOCUENTA') ? ' is-invalid' : ''), 'placeholder' => 'Codigocuenta']) }}
+                                    {!! $errors->first('CODIGOCUENTA', '<div class="invalid-feedback">:message</div>') !!}
+                                </div>      
                                 <div class="form-group">
                                     {{ Form::label('NOMBRECUENTA') }}
                                     {{ Form::text('NOMBRECUENTA', $catalogo->NOMBRECUENTA, ['class' => 'form-control' . ($errors->has('NOMBRECUENTA') ? ' is-invalid' : ''), 'placeholder' => 'Nombrecuenta']) }}

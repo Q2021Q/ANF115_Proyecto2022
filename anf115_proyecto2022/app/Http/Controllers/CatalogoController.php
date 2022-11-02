@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Empresa;
 use App\Models\Cuentageneral;
 use Exception;
+use Alert;
 
 /**
  * Class CatalogoController
@@ -36,8 +37,8 @@ class CatalogoController extends Controller
     {
         $catalogo = new Catalogo();
         $empresas = Empresa::select(['idempresa','nombreempresa'])->pluck('nombreempresa', 'idempresa')->toArray();
-        $cuentas = Cuentageneral::select(['codigocuenta'])->pluck('codigocuenta')->toArray();
-        return view('catalogo.create', compact('catalogo', 'empresas', 'cuentas'));
+    
+        return view('catalogo.create', compact('catalogo', 'empresas'));
     }
 
     /**
@@ -116,7 +117,7 @@ class CatalogoController extends Controller
             $catalogo = Catalogo::where('idempresa', $idEmpresa)->where('codigocuenta',$codigocuenta)->delete();
            
         } catch(Exception $e){
-            $type="warning";
+            $type="error";
             $message="Cannot delete a parent row";
         }
 

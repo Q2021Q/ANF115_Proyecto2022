@@ -23,7 +23,7 @@
                               </div>
                         </div>
                     </div>
-                    @if ($message = Session::get('success'))
+                    <!--@if ($message = Session::get('success'))
                         <div class="alert alert-success">
                             <p>{{ $message }}</p>
                         </div>
@@ -33,7 +33,7 @@
                         <div class="alert alert-warning">
                             <p>{{ $message }}</p>
                         </div>
-                    @endif
+                    @endif-->
 
                     <div class="card-body">
                         <div class="table-responsive">

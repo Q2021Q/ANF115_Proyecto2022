@@ -3,12 +3,12 @@
         
         <div class="form-group">
             {{ Form::label('IDEMPRESA') }}
-            {{ Form::text('IDEMPRESA', $catalogo->IDEMPRESA, ['class' => 'form-control' . ($errors->has('IDEMPRESA') ? ' is-invalid' : ''), 'placeholder' => 'Idempresa']) }}
+            {{ Form::text('IDEMPRESA', $catalogo->IDEMPRESA, ['class' => 'form-control', 'readonly' => 'true'. ($errors->has('IDEMPRESA') ? ' is-invalid' : ''), 'placeholder' => 'Idempresa']) }}
             {!! $errors->first('IDEMPRESA', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
             {{ Form::label('CODIGOCUENTA') }}
-            {{ Form::text('CODIGOCUENTA', $catalogo->CODIGOCUENTA, ['class' => 'form-control' . ($errors->has('CODIGOCUENTA') ? ' is-invalid' : ''), 'placeholder' => 'Codigocuenta']) }}
+            {{ Form::text('CODIGOCUENTA', $catalogo->CODIGOCUENTA, ['class' => 'form-control', 'readonly' => 'true'. ($errors->has('CODIGOCUENTA') ? ' is-invalid' : ''), 'placeholder' => 'Codigocuenta']) }}
             {!! $errors->first('CODIGOCUENTA', '<div class="invalid-feedback">:message</div>') !!}
         </div>
         <div class="form-group">
