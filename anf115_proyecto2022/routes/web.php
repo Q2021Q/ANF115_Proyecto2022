@@ -77,3 +77,11 @@ Route::get('/empresa', function () {
 Route::get('/importar', function () {
     return view('ImportarBalanceGeneralView');
 });
+
+Route::get('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'show'])->name('catalogos.show');;
+Route::resource('/catalogos', CatalogoController::class)->except([
+    'show'
+]);
+Route::PATCH('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'update'])->name('catalogos.update');
+Route::GET('/catalogos/{idEmpresa}/{codigocuenta}/edit', [CatalogoController::class, 'edit'])->name('catalogos.edit');
+Route::DELETE('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'destroy'])->name('catalogos.destroy');
