@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CuentaGeneralController;
+
+use App\Http\Controllers\CatalogoController;
+
 use App\Http\Controllers\CatalogoImportController;
 use App\Http\Controllers\RatioController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -82,12 +86,10 @@ Route::get('/importar', function () {
     return view('ImportarBalanceGeneralView');
 });
 
-Route::get('/graficas', [CuentaGeneralController::class, 'index']);
-
-Route::get('/graficasc', function () {
-    return view('graficoConsultas');
-});
-
-Route::get('/graficasp', function () {
-    return view('graficosPrueba');
-});
+Route::get('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'show'])->name('catalogos.show');;
+Route::resource('/catalogos', CatalogoController::class)->except([
+    'show'
+]);
+Route::PATCH('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'update'])->name('catalogos.update');
+Route::GET('/catalogos/{idEmpresa}/{codigocuenta}/edit', [CatalogoController::class, 'edit'])->name('catalogos.edit');
+Route::DELETE('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'destroy'])->name('catalogos.destroy');

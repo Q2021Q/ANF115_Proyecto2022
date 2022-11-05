@@ -1,29 +1,38 @@
 <?php
 
-/**
- * Created by Reliese Model.
- */
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Catalogo
- * 
- * @property string $IDEMPRESA
- * @property string $CODIGOCUENTA
- * @property string $NOMBRECUENTA
  *
- * @package App\Models
+ * @property $IDEMPRESA
+ * @property $CODIGOCUENTA
+ * @property $NOMBRECUENTA
+ *
+ * @package App
+ * @mixin \Illuminate\Database\Eloquent\Builder
  */
 class Catalogo extends Model
 {
-	protected $table = 'catalogo';
-	public $incrementing = false;
-	public $timestamps = false;
+    protected $table = 'catalogo';
+  	public $timestamps = false;
+    static $rules = [
+		'IDEMPRESA' => 'required',
+		'CODIGOCUENTA' => 'required',
+		'NOMBRECUENTA' => 'required',
+    ];
 
-	protected $fillable = [
-		'NOMBRECUENTA'
-	];
+    protected $perPage = 20;
+
+    /**
+     * Attributes that should be mass-assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['IDEMPRESA','CODIGOCUENTA','NOMBRECUENTA'];
+
+
+
 }
