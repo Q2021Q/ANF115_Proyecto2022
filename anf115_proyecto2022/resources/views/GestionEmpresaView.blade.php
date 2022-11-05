@@ -218,6 +218,22 @@
                     </div>
                 </div>
                 
+                <div class="col-lg-3" class="card border-secondary mb-3">
+                    <div class="card" style="height: 22rem;">
+                        <div class="card" class="card border-primary mb-3">
+                            <div class="card-header text-center">
+                            <p class="h6">Comparacion de ratios en dos periodos </p>
+                            </div>
+                        </div>
+                        <div class="card-body" class="card-body text-secondary">
+                            <a href="{{route('comparacionRatio_periodoAperidoB', $idEmpresa)}}">
+                                <img class="card-img-top" src="{{asset('imagenes/periodoAB.jpg')}}" alt=""
+                                    class="img-rounded img-fluid">
+                                    
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <br>

@@ -11,6 +11,8 @@ use App\Models\Ratiogeneral;
 use App\Models\Cuentapuente;
 use App\Models\Cuentageneral;
 
+use RealRashid\SweetAlert\Facades\Alert;
+
 class RazonFinanciera{
 
     public $valoRatio;
@@ -277,6 +279,7 @@ class RatioController extends Controller
         $ratioX3 = TRUE;
         $apalancamiento = FALSE;
         $endeudamiento = FALSE;
+        $comparacionPeriodoAperiodoB = FALSE;
         $tipoRazon = "Razones de Liquidez";
 
         $nombreRatio1 = "Liquidez corriente";
@@ -284,7 +287,7 @@ class RatioController extends Controller
         $nombreRatio3 = "Razon de capital de trabajo";
         $arrayRatioGeneral = array();
         $arrayRatioGeneralVacio = TRUE;
-        return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio'));
+        return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'comparacionPeriodoAperiodoB'));
 
     }
 
@@ -305,6 +308,7 @@ class RatioController extends Controller
         $ratioX3 = TRUE;
         $apalancamiento = FALSE;
         $endeudamiento = FALSE;
+        $comparacionPeriodoAperiodoB = FALSE;
         $arrayRatioGeneralVacio = FALSE;//para cuanto entra desde el otro metodo
         $tipoRazon = "Razones de Liquidez periodo contable ". $periodoContable;
 
@@ -324,7 +328,7 @@ class RatioController extends Controller
 
                $arrayRatios = $RazonFinanciera->calcularRatiosLiquidez($idEmpresa, $periodoContable, $nomEmpresa);
 
-                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios'));
+                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
 
                 break;
             case 2:
@@ -339,7 +343,7 @@ class RatioController extends Controller
 
                 $arrayRatioEficiencia = $RazonFinanciera->getRatioGeneral(2);
                 $arrayRatioGeneral =  $arrayRatioEficiencia;
-                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios'));
+                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
 
                 break;
             case 3:
@@ -353,7 +357,7 @@ class RatioController extends Controller
                 $tipoRazon = "Razones de Rentabilidad periodo contable ". $periodoContable;
                 $nombreRatio1 = "Rentabilidad sobre ventas";
                 $nombreRatio2 = "Rentabilidad sobre inversión(ROI)";
-                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios'));
+                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
 
                 break;
             case 4:
@@ -370,7 +374,7 @@ class RatioController extends Controller
                 $nombreRatio1 = "Margen Neto";
                 $nombreRatio2 = "Rotación de activos";
                 $nombreRatio3 = "Multiplicador de capital";
-                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios'));
+                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
 
                 break;
             case 5:
@@ -387,13 +391,169 @@ class RatioController extends Controller
                 $nombreRatio1 = "Grado de Endeudamiento";
                 $nombreRatio2 = "Grado de Propiedad";
                 $nombreRatio3 = "Endeudamiento Patrimonial";
-                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios'));
+                return view('ComparacionRatioGeneralView', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
 
                 break;    
         }
 
-       // dd($request);
-
-
     }
+
+    public function comparacionRatioPeriodoA_periodoB_Redirec($idEmpresa){
+
+     
+      $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idempresa', '=', $idEmpresa)->get();
+      $nomEmpresa = $nombreEmpresa[0]->nombreempresa;
+
+
+      $periodosContable = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+      $listRatio = Tiporatio::all();
+
+      $nombreTipoComparacion = "Comparacion de ratios en dos periodos";
+
+      $ratioX3 = TRUE;
+      $apalancamiento = FALSE;
+      $endeudamiento = FALSE;
+      $comparacionPeriodoAperiodoB = TRUE;
+      $tipoRazon = "Razones de Liquidez";
+
+      $nombreRatio1 = "Liquidez corriente";
+      $nombreRatio2 = "Prueba Acida";
+      $nombreRatio3 = "Razon de capital de trabajo";
+      $arrayRatioGeneral = array();
+      $arrayRatioGeneralVacio = TRUE;
+      return view('ComparacionRatioPeriodoABview', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'comparacionPeriodoAperiodoB'));
+
+  }
+//--------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
+//----------------------------------------------
+  public function comparacionRatioPeriodoAB(Request $request){
+
+    $idEmpresa = $request->idEmpresa;
+    $periodoContable = $request->periodoContable;
+    $periodoContableB = $request->periodoContableB;
+
+
+ 
+    $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idempresa', '=', $idEmpresa)->get();
+    $nomEmpresa = $nombreEmpresa[0]->nombreempresa;
+
+
+    $periodosContable = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+    $listRatio = Tiporatio::all();
+
+    $nombreTipoComparacion = "Comparacion por ratios generales";
+
+    $ratioX3 = TRUE;
+    $apalancamiento = FALSE;
+    $endeudamiento = FALSE;
+    $comparacionPeriodoAperiodoB = FALSE;
+    $arrayRatioGeneralVacio = FALSE;//para cuanto entra desde el otro metodo
+    $tipoRazon = "Razones de Liquidez periodo contable ". $periodoContable. " - " .$periodoContableB;
+
+    $nombreRatio1 = "Liquidez corriente";
+    $nombreRatio2 = "Prueba Acida";
+    $nombreRatio3 = "Razon de capital de trabajo";
+
+    $RazonFinanciera = new RazonFinanciera();
+    $arrayRatioGeneral = array();
+    $arrayRatios = array();
+
+    if($periodoContable==$periodoContableB){
+      $arrayRatioGeneralVacio = TRUE;
+      Alert::warning('Periodos Iguales', 'Seleccione Periodos distintos');
+      return view('ComparacionRatioPeriodoABview', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'comparacionPeriodoAperiodoB'));
+    }
+
+    switch ($request->tipoRatio) {
+        case 1:
+            //LIQUIDEZ
+           $nomEmpresa_periodoA = $nomEmpresa." ".$periodoContable;
+           $arrayRatioGeneral = $RazonFinanciera->calcularRatiosLiquidez($idEmpresa, $periodoContable, $nomEmpresa_periodoA);;
+
+           $nomEmpresa_periodoB = $nomEmpresa." ".$periodoContableB;
+           $arrayRatios = $RazonFinanciera->calcularRatiosLiquidez($idEmpresa, $periodoContableB, $nomEmpresa_periodoB);
+
+            return view('ComparacionRatioPeriodoABview', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
+
+            break;
+        case 2:
+
+            //EFICIENCIA
+            $ratioX3 = FALSE;
+            $tipoRazon = "Razones de Eficiencia periodo contable ". $periodoContable. " - " .$periodoContableB;
+            $nombreRatio1 = "Índice de Margen Bruto";
+            $nombreRatio2 = "Índice de Margen Operativo";
+           
+            $nomEmpresa_periodoA = $nomEmpresa." ".$periodoContable;
+            $arrayRatioGeneral = $RazonFinanciera->calcularRatiosEficiencia($idEmpresa, $periodoContable, $nomEmpresa_periodoA);
+
+            $nomEmpresa_periodoB = $nomEmpresa." ".$periodoContableB;
+            $arrayRatios = $RazonFinanciera->calcularRatiosEficiencia($idEmpresa, $periodoContableB, $nomEmpresa_periodoB);
+
+           
+            return view('ComparacionRatioPeriodoABview', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
+
+            break;
+        case 3:
+            //RENTABILIDAD
+            $nomEmpresa_periodoA = $nomEmpresa." ".$periodoContable;
+            $arrayRatioGeneral = $RazonFinanciera->calcularRatiosRentabilidad($idEmpresa, $periodoContable, $nomEmpresa_periodoA);
+
+            $nomEmpresa_periodoB = $nomEmpresa." ".$periodoContableB;
+            $arrayRatios = $RazonFinanciera->calcularRatiosRentabilidad($idEmpresa, $periodoContableB, $nomEmpresa_periodoB);
+
+
+            $ratioX3 = FALSE;
+            $tipoRazon = "Razones de Rentabilidad periodo contable ". $periodoContable. " - " .$periodoContableB;
+            $nombreRatio1 = "Rentabilidad sobre ventas";
+            $nombreRatio2 = "Rentabilidad sobre inversión(ROI)";
+            return view('ComparacionRatioPeriodoABview', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
+
+            break;
+        case 4:
+            //ENDEUDAMIENTO
+            $endeudamiento = TRUE;
+
+
+            $nomEmpresa_periodoA = $nomEmpresa." ".$periodoContable;
+            $arrayRatioGeneral = $RazonFinanciera->calcularRatiosEndeudamiento($idEmpresa, $periodoContable, $nomEmpresa_periodoA);
+
+            $nomEmpresa_periodoB = $nomEmpresa." ".$periodoContableB;
+            $arrayRatios = $RazonFinanciera->calcularRatiosEndeudamiento($idEmpresa, $periodoContableB, $nomEmpresa_periodoB);
+
+
+            $ratioX3 = TRUE;
+            $tipoRazon = "Razones de Endeudamiento periodo contable ". $periodoContable. " - " .$periodoContableB;
+            $nombreRatio1 = "Margen Neto";
+            $nombreRatio2 = "Rotación de activos";
+            $nombreRatio3 = "Multiplicador de capital";
+            return view('ComparacionRatioPeriodoABview', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
+
+            break;
+        case 5:
+            //APALANCAMIENTO
+
+            $arrayRatioApalancamiento = $RazonFinanciera->getRatioGeneral(5);
+            $arrayRatioGeneral =  $arrayRatioApalancamiento;
+
+            $nomEmpresa_periodoA = $nomEmpresa." ".$periodoContable;
+            $arrayRatioGeneral = $RazonFinanciera->calcularRatiosApalancamiento($idEmpresa, $periodoContable, $nomEmpresa_periodoA);
+
+            $nomEmpresa_periodoB = $nomEmpresa." ".$periodoContableB;
+            $arrayRatios = $RazonFinanciera->calcularRatiosApalancamiento($idEmpresa, $periodoContableB, $nomEmpresa_periodoB);
+            
+            $ratioX3 = TRUE;
+            $apalancamiento = TRUE;
+            $tipoRazon = "Razones de Apalancamiento periodo contable ". $periodoContable. " - " .$periodoContableB;
+            $nombreRatio1 = "Grado de Endeudamiento";
+            $nombreRatio2 = "Grado de Propiedad";
+            $nombreRatio3 = "Endeudamiento Patrimonial";
+            return view('ComparacionRatioPeriodoABview', compact('idEmpresa', 'nomEmpresa', 'periodosContable', 'listRatio', 'ratioX3', 'tipoRazon', 'nombreTipoComparacion', 'nombreRatio1', 'nombreRatio2', 'nombreRatio3', 'apalancamiento', 'endeudamiento', 'arrayRatioGeneral', 'arrayRatioGeneralVacio', 'arrayRatios', 'comparacionPeriodoAperiodoB'));
+
+            break;    
+    }
+
+ }
+
 }

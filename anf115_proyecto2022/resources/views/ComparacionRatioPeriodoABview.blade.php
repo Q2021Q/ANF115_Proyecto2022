@@ -46,12 +46,12 @@
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
     
-    <form action="{{route('comparacionRatio_General_post')}}" method="POST">
+    <form action="{{route('comparacionRatio_periodoAB')}}" method="POST">
     {{csrf_field()}}
     <input type="text" id="idEmpresa" name="idEmpresa" value={{$idEmpresa}} style="display: none">
 
     <div class="card border-secondary mb-3">
-                    <div class="card" style="height: 20rem;">
+                    <div class="card" style="height: 25rem;">
                         <div class="card" class="card border-primary mb-3">
                             <div class="card-header text-center">
                            
@@ -60,13 +60,24 @@
                         </div>
                         <div class="card-body" class="card-body text-secondary">
                         
-                            <label>Periodo Contable</label>
+                        <h4>Selecione los periodos a comparar</h4>
+                        <br> 
+
+                            <label>Periodo Contable A</label>
                                   <select  name="periodoContable" id="periodoContable"  class="form-select form-select-lg mb-3"  required>
                                       @foreach ($periodosContable as $periodo)
                                       <option value="{{$periodo->year}}">{{$periodo->year}}</option>
                                       @endforeach
                                   </select>
-                                 
+                                  <br> 
+                                  <br>
+                                  <label>Periodo Contable B</label>
+                                  <select  name="periodoContableB" id="periodoContableB"  class="form-select form-select-lg mb-3"  required>
+                                      @foreach ($periodosContable as $periodo)
+                                      <option value="{{$periodo->year}}">{{$periodo->year}}</option>
+                                      @endforeach
+                                  </select>
+
                                   <br> 
                                   <br> 
                             <label>Razon Financiera</label>
@@ -75,7 +86,6 @@
                                       <option value="{{$ratio->IDTIPORATIO}}">{{$ratio->NOMBRETIPORATIO}}</option>
                                       @endforeach
                                   </select>
-                                  <br> 
                                   <br> 
                                   <br> 
                             <input type="submit" value="Calcular" class="btn btn-primary">
@@ -122,9 +132,8 @@
         
             //Concatenamos las tablas en una variable, también podriamos hacer el "echo" directamente
         if(!$arrayRatioGeneralVacio){
+            //Fila de ratios generales
 
-
-            
             $arrayRatiosPeriodoAB = FALSE;
 
             foreach($arrayRatioGeneral as $elemento){
@@ -141,14 +150,28 @@
             if($arrayRatiosPeriodoAB)
               Alert::error('Error en cuentas de ratio', 'Cuentas Sin Registro');
 
-            //Fila de ratios generales
             $concat .= '<tr >';
             $concat .= '<td class="table-warning">' .$arrayRatioGeneral[0].'</td>';
-            $concat .= '<td>' .$arrayRatioGeneral[1].'</td>';
-            $concat .= '<td>' .$arrayRatioGeneral[2].'</td>';
+
+            if($arrayRatioGeneral[1] != -1){
+                $concat .= '<td>' .$arrayRatioGeneral[1].'</td>';
+            }
+            else
+            $concat .= '<td>' ."".'</td>';
+
+            if($arrayRatioGeneral[2] != -1){
+                $concat .= '<td>' .$arrayRatioGeneral[2].'</td>';
+            }
+            else
+            $concat .= '<td>' ."".'</td>';
+        
            
             if($ratioX3){
-                $concat .= '<td>' .$arrayRatioGeneral[3].'</td>';
+                if($arrayRatioGeneral[3] != -1)
+                    $concat .= '<td>' .$arrayRatioGeneral[3].'</td>';
+                else
+                $concat .= '<td>' ."".'</td>';
+
                 $concat .= '</tr>';  
             }
             else
@@ -230,6 +253,7 @@
           
             $concat .= '</tr>';  
         }
+       
           
         
             $concat .= '</tr>';
