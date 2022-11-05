@@ -21,6 +21,8 @@ use App\Models\Empresa;
 use App\views\importarBalanceGeneralView;
 use App\views\ImportarEstadoResultadoView;
 
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 
 
@@ -463,10 +465,13 @@ try {
 $cuentas_sinRegistro = $balance->extraerCuentaSinRegistro_Catalog($cuentasBalance, $idEmpresa);
 $cuentasInvalidas = $cuentas_sinRegistro;
 if(empty(!$cuentas_sinRegistro)){
-  $mensaje = "Error en el codigo de cuenta, no se encontro uno o varios registros en el catalogo";
+  $mensaje = "No se encontro uno o varios registros en el catalogo";
     $error_cuenta = TRUE;
     //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
     //$BalanceImportadoView = $balance->asignarCuentaRatio_xKey($cuentasBalance);
+
+    Alert::error('Error en los datos', 'Error en el codigo de cuenta');
+
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
         //dd($cuentas_sinRegistro);
 }
@@ -476,8 +481,11 @@ if(empty(!$cuentas_sinRegistro)){
 $cuentas_repetidas = $balance->extraerCuentasRepetidasBalance($cuentasBalance);
 $cuentasInvalidas = $cuentas_repetidas;
 if(empty(!$cuentas_repetidas)){
- $mensaje = "Error en el condigo de cuenta, los codigos deben ser unicos";
- $error_cuenta = TRUE;      
+ $mensaje = "Error en el condigo de cuenta";
+ $error_cuenta = TRUE;  
+ 
+ Alert::error('Error en los datos', 'Cuentas duplicadas');
+ 
  return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
 }
 
@@ -487,9 +495,9 @@ if(empty(!$cuentas_repetidas)){
 $cuentas_sinRegistro_ratios = $balance->extraerCuentaSinRegistro_cuentaRatio($cuentasBalance);
 $cuentasInvalidas = $cuentas_sinRegistro_ratios;
 if(empty(!$cuentas_sinRegistro_ratios)){
-    $mensaje = "Error en el condigo de la cuenta ratio, no se encontro uno o varios registros";
+    $mensaje = "No existe la cuenta de ratio";
     $error_cuenta = TRUE;   
-    
+    Alert::error('Error en los datos', 'Cuenta Ratio sin registro');
      //Hasta que ya se a utilizado para extraer los elementosn entonces reemplazar el codigo de la cuenta por el nombre de la cuenta de ratios
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
@@ -498,9 +506,9 @@ if(empty(!$cuentas_sinRegistro_ratios)){
   $CuentasDuplicadasRatios = $balance->extraerCuentasDuplicasdadRatio($cuentasBalance); 
   $cuentasInvalidas = $CuentasDuplicadasRatios;
   if(empty(!$CuentasDuplicadasRatios)){
-    $mensaje = "Error en el condigo de la cuenta ratio, codigos duplicados";
+    $mensaje = "Error en el condigo de la cuenta ratio";
     $error_cuenta = TRUE;   
-    
+    Alert::error('Error en los datos', 'Codigo de ratio duplicado');
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 //--------------------------------------------------------------------------------------------------------------------------------------
@@ -508,9 +516,9 @@ if(empty(!$cuentas_sinRegistro_ratios)){
 $cuentaSinRegistro_tipoCuenta = $balance->extraerCuentaSinRegistro_tipoCuenta($cuentasBalance);
 $cuentasInvalidas = $cuentaSinRegistro_tipoCuenta;
 if(empty(!$cuentaSinRegistro_tipoCuenta)){
-    $mensaje = "Error en el id del tipo de cuenta, registros no encontrados";
+    $mensaje = "Registros no encontrados";
     $error_cuenta = TRUE;   
-    
+    Alert::error('Error en los datos', 'Error en el id del tipo de cuenta');
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
  //-------------------------------------------------------------------------------------------------------------------------------------
@@ -518,9 +526,9 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
  $arraySaldosInvalidos = $balance->extraerCuentaSaldosInvalidosImport($cuentasBalance);
  $cuentasInvalidas = $arraySaldosInvalidos;
  if(empty(!$arraySaldosInvalidos)){
-    $mensaje = "Error en el saldo de la cuenta, uno o mas saldos son invalidos";
+    $mensaje = "Error en el saldo de la cuenta";
     $error_cuenta = TRUE;   
-    
+    Alert::error('Error en los datos', 'Uno o mas saldos son invalidos');
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 //Si no hay errores en las cuentas
@@ -531,7 +539,8 @@ if(empty(!$cuentaSinRegistro_tipoCuenta)){
 $CuentasGeneralExistente = $balance->getCuentasGeneralExistente($cuentasBalance, $year, $idEmpresa);
 $cuentasInvalidas = $CuentasGeneralExistente;
 if(empty(!$CuentasGeneralExistente)){
-    $mensaje = "¡ Intenta ingresar cuentas ya existentes !, revise el archivo porfavor";
+    $mensaje = "¡ Intenta ingresar cuentas ya existentes !";
+    Alert::error('Error en los datos', 'Intenta ingresar cuentas ya existentes !, revise el archivo porfavor');
     $error_cuenta = TRUE;   
     
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
@@ -543,9 +552,9 @@ if(empty(!$CuentasGeneralExistente)){
 $arrayCuentaPuenteDuplicacadaBD = $balance->getCuentasExistenteCuentaPunte($cuentasBalance, $year, $idEmpresa);
 $cuentasInvalidas = $arrayCuentaPuenteDuplicacadaBD;
 if(empty(!$arrayCuentaPuenteDuplicacadaBD)){
-    $mensaje = "¡ Intenta ingresar cuentas de razones financieras existentes !, verifique por favor";
+    $mensaje = "Cuenta de ratio registrada";
     $error_cuenta = TRUE;   
-    
+    Alert::error('Error en los datos', 'Intenta ingresar cuentas de razones financieras existentes');
     return view('BalanceImportadoView', compact('cuentasBalance', 'cuentasInvalidas', 'mensaje', 'error_cuenta','nomE', 'nombreEstado'));
    }
 //-------------------------------------------------------------------------------------------------------------------------------

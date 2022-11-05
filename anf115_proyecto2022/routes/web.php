@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CuentaGeneralController;
 use App\Http\Controllers\CatalogoImportController;
+use App\Http\Controllers\RatioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,9 @@ route::get('gestionarEmpresaRedirec/{idEmpresa}',[EmpresaController::class,'apar
 route::get('formEmpresa',[EmpresaController::class,'formInsertarEmpresa'])->name('empresa_insert');
 route::get('gestionarEmpresa/{idEmpresa}',[EmpresaController::class,'apartadoEmpresa'])->name('EmpresaGestion');
 
+//-------------------------
+//-------------------
+route::get('comparacionRatioGeneral/{idEmpresa}',[RatioController::class,'comparacionRatioGeneraRedirec'])->name('comparacionRatio_General');
 
 route::get('importarBalanceRedi/{cuentasBalance1}',[CuentaGeneralController::class,'importarBalanceRedirec'])->name('importarBalance_Redirec');
 
@@ -55,11 +59,15 @@ route::get('importarBalanceRedi/{cuentasBalance1}',[CuentaGeneralController::cla
 route::post('guardarEmp',[EmpresaController::class,'guardarEmpresa'])->name('guardar_empresa_e');
 
 route::post('importarBalaneceG',[CuentaGeneralController::class,'importarBalance'])->name('importar_balance');
-////////////*******************
-//---------------------------------------------
+
 route::post('importarCatalogoCsv',[CatalogoImportController::class,'importarCatalogoCSV'])->name('importarCatalogo_CSV');
-////****************************************************** */
-//route::post('gestionEmpresa',[EmpresaController::class,'opcionFuncionEmpresa'])->name('gestionar_empresa');
+
+//-----------------------------------------------
+//------------------------------
+//------------
+route::post('comparacionRatioGeneralPost',[RatioController::class,'comparacionRatioGeneral'])->name('comparacionRatio_General_post');
+//************************************* */
+//--------------------------
 
 // Route::get('/', function () {
 //     return view('index');
