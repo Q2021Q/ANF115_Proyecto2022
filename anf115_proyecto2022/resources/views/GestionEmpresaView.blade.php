@@ -235,6 +235,23 @@
                     </div>
                 </div>
 
+                <div class="col-lg-3" class="card border-secondary mb-3">
+                    <div class="card" style="height: 22rem;">
+                        <div class="card" class="card border-primary mb-3">
+                            <div class="card-header text-center">
+                            <p class="h6">Promedio Empresarial </p>
+                            </div>
+                        </div>
+                        <div class="card-body" class="card-body text-secondary">
+                            <a href="{{route('comparacionRatioPromedioEmpresarialRedi_get', $idEmpresa)}}">
+                                <img class="card-img-top" src="{{asset('imagenes/promedioEmpresa.jpg')}}" alt=""
+                                    class="img-rounded img-fluid">
+                                    
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <br>
             <br>

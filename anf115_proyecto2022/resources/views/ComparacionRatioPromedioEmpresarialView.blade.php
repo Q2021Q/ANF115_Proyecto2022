@@ -46,7 +46,7 @@
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </script>
     
-    <form action="{{route('comparacionRatio_General_post')}}" method="POST">
+    <form action="{{route('comparacionRatioPromedioEmpresarial_post')}}" method="POST">
     {{csrf_field()}}
     <input type="text" id="idEmpresa" name="idEmpresa" value={{$idEmpresa}} style="display: none">
 

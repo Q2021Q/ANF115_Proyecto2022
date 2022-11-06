@@ -57,6 +57,8 @@ route::get('gestionarEmpresa/{idEmpresa}',[EmpresaController::class,'apartadoEmp
 route::get('comparacionRatioGeneral/{idEmpresa}',[RatioController::class,'comparacionRatioGeneraRedirec'])->name('comparacionRatio_General');
 
 //------------------------------------------
+route::get('comparacionRatioPromedioEmpresarialGet/{idEmpresa}',[RatioController::class,'comparacionRatioPromedioEmpresarialRedi'])->name('comparacionRatioPromedioEmpresarialRedi_get');
+
 route::get('comparacionRatio_periodoAB/{idEmpresa}',[RatioController::class,'comparacionRatioPeriodoA_periodoB_Redirec'])->name('comparacionRatio_periodoAperidoB');
 
 route::get('importarBalanceRedi/{cuentasBalance1}',[CuentaGeneralController::class,'importarBalanceRedirec'])->name('importarBalance_Redirec');
@@ -70,11 +72,14 @@ route::post('importarCatalogoCsv',[CatalogoImportController::class,'importarCata
 
 route::post('comparacionRatioGeneralPost',[RatioController::class,'comparacionRatioGeneral'])->name('comparacionRatio_General_post');
 
-//---------------------------------------------------------------------------
-//-------------------------------------------
-//------------------------
 route::post('comparacionRatioPeriodoABpost',[RatioController::class,'comparacionRatioPeriodoAB'])->name('comparacionRatio_periodoAB');
-//-----------------------------------------------------------
+
+//-----------------------------------------------------------------------------------------
+//-------------------------------------------------------
+//-------------------------
+route::post('comparacionRatioPromedioEmpresarialPost',[RatioController::class,'comparacionRatioPromedioEmpresarial'])->name('comparacionRatioPromedioEmpresarial_post');
+//-----------------------------------
+//----------------
 // Route::get('/', function () {
 //     return view('index');
 // });
