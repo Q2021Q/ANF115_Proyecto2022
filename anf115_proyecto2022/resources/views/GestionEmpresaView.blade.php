@@ -24,7 +24,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <div>
-            <!-- <a href="{{route('empresa_insert')}}" class="btn btn-primary">Agregar Empresa</a> -->
+            <a href="{{route('empresa_insert')}}" class="btn btn-primary">Agregar Empresa</a> -->
         </div>
         </ul>
       </nav>  <!-- /.sidebar-menu -->
