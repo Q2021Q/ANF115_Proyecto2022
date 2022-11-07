@@ -133,7 +133,11 @@ public  function extraerCuentasDuplicasdadRatio($cuentaBalance): array{
 
     $arrayCodigoCuetasRatio = array();    
     for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
-        $arrayCodigoCuetasRatio[$j] = $cuentaBalance[$j]->get_codigoCuentaRatio();
+        $ratio = $cuentaBalance[$j]->get_codigoCuentaRatio();
+        if(!empty($ratio)){
+            $arrayCodigoCuetasRatio[$j] = $ratio;
+        }
+        
     }
 
         $arraySinDuplicados = array();
@@ -629,16 +633,65 @@ public function importarBalanceRedirec($cuentasBalance): array{
 
 }
 
+/*-------------------------------------------------------------------------------------------------*/
 
+public function graficosc($idEmpresa){
+    $consultas = Cuentageneral::select(['year','saldo','idempresa'])
+    ->where('idempresa',$idEmpresa)
+    ->orderBy('year','asc')
+    ->get();
+    $periodosContable = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+    $CodCatalogo = Catalogo::select(['nombrecuenta','codigocuenta'])
+                                         ->where('idempresa', '=', $idEmpresa)
+                                         ->get();
+    $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idempresa', '=', $idEmpresa)->get();
+    $nameEmpresa = $nombreEmpresa[0]->nombreempresa;
+    $puntos = [];
+    foreach($consultas as $consulta){
+        $puntos[] = ['name'=>$consulta['year'], 'y'=>floatval($consulta['saldo']),'idempresa'=>$idEmpresa,'nameEmpresa'=>$nameEmpresa];
+    }
+    return view("GraficoConsultas",compact('idEmpresa','nameEmpresa','consultas','periodosContable','CodCatalogo') ,["data" => json_encode($puntos)]);
+    //dd($periodosContable);
+}
 
-   public function index(){
-        $datos = Cuentageneral::all();
+public function graficosf(Request $request){
+    $fechainicio = $request->input('fechainicio');
+    $fechafin = $request->input('fechafin');
+    $idEmpresa = $request->input('idEmpresa');
+    $periodosContable = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+    $consultas = Cuentageneral::select(['year','saldo','idEmpresa'])
+    ->where('idEmpresa',$idEmpresa)
+    ->whereBetween('year', [$fechainicio, $fechafin])
+    ->orderBy('year','asc')
+    ->get();
+    
+    $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idEmpresa', '=', $idEmpresa)->get();
+    $nameEmpresa = $nombreEmpresa[0]->nombreempresa;
+    $puntos = [];
+    foreach($consultas as $consulta){
+        $puntos[] = ['name'=>$consulta['year'], 'y'=>floatval($consulta['saldo']),'idEmpresa'=>$idEmpresa,'nameEmpresa'=>$nameEmpresa];
+    }
+    return view("graficos",compact('idEmpresa','nameEmpresa','consultas','periodosContable') ,["data" => json_encode($puntos)]);
+    // dd($consultas);
+    //return $request;
+    //return view("graficos");
+    //dd($request->all());
+    //echo "Si se enviaron $fechainicio, $fechafin, $idEmpresa";
+}
 
-        $puntos = [];
-        foreach($datos as $dato){
-            $puntos[] = ['name' => $dato['CODIGOCUENTA'], 'y' => floatval($dato['SALDO'])];
-        }
-        return view("Graficos", ["data" => json_encode($puntos)]);
-   }
+public function eloquent(Request $request){
+    // //$arrayCuentaf = array();
+    // $consulta = Cuentageneral::select(['year','saldo','idempresa'])
+    //                         ->where('idempresa',$idEmpresa)
+    //                         ->whereBetween('year',[$desde,$hasta])
+    //                         ->orderBy('year')
+    //                         ->get();
+    // // $datos = [];
+    // // foreach($consultas as $consulta){
+    // //     $datos[] = ['name'=>$consulta['year'], 'y'=>$consulta['saldo']];
+    // // }
+    // // return $consulta->toArray();
+    dd($request->all());
+}
     
 }

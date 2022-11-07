@@ -5,9 +5,12 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CuentaGeneralController;
 
 use App\Http\Controllers\CatalogoController;
-
 use App\Http\Controllers\CatalogoImportController;
+
 use App\Http\Controllers\RatioController;
+use App\Http\Controllers\AnalisisHVcontroller;
+
+use App\Http\Controllers\RatioGeneralController;
 
 
 /*
@@ -56,7 +59,9 @@ route::get('gestionarEmpresa/{idEmpresa}',[EmpresaController::class,'apartadoEmp
 
 route::get('comparacionRatioGeneral/{idEmpresa}',[RatioController::class,'comparacionRatioGeneraRedirec'])->name('comparacionRatio_General');
 
-//------------------------------------------
+
+route::get('analisisHorizontalGet/{idEmpresa}',[AnalisisHVcontroller::class,'analisisHorizontalGet'])->name('analisisHorizontal_Get');
+
 route::get('comparacionRatioPromedioEmpresarialGet/{idEmpresa}',[RatioController::class,'comparacionRatioPromedioEmpresarialRedi'])->name('comparacionRatioPromedioEmpresarialRedi_get');
 
 route::get('comparacionRatio_periodoAB/{idEmpresa}',[RatioController::class,'comparacionRatioPeriodoA_periodoB_Redirec'])->name('comparacionRatio_periodoAperidoB');
@@ -74,12 +79,14 @@ route::post('comparacionRatioGeneralPost',[RatioController::class,'comparacionRa
 
 route::post('comparacionRatioPeriodoABpost',[RatioController::class,'comparacionRatioPeriodoAB'])->name('comparacionRatio_periodoAB');
 
-//-----------------------------------------------------------------------------------------
-//-------------------------------------------------------
-//-------------------------
+route::post('analisisHorizontalPost',[AnalisisHVcontroller::class,'analisisHorizontalPost'])->name('analisisHorizontal_Post');
+
+//-------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------
+//-----------------------
 route::post('comparacionRatioPromedioEmpresarialPost',[RatioController::class,'comparacionRatioPromedioEmpresarial'])->name('comparacionRatioPromedioEmpresarial_post');
-//-----------------------------------
-//----------------
+//---------------------------------------
+
 // Route::get('/', function () {
 //     return view('index');
 // });
@@ -100,3 +107,9 @@ Route::resource('/catalogos', CatalogoController::class)->except([
 Route::PATCH('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'update'])->name('catalogos.update');
 Route::GET('/catalogos/{idEmpresa}/{codigocuenta}/edit', [CatalogoController::class, 'edit'])->name('catalogos.edit');
 Route::DELETE('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'destroy'])->name('catalogos.destroy');
+
+/*-----------------------------Graficos-----------------------------------------------------------*/
+Route::get('graficasc/{idEmpresa}',[CuentaGeneralController::class,'graficosc'])->name('graficas_C');
+Route::get('graficasc/{idEmpresa}/graficosf',[CuentaGeneralController::class,'graficosf'])->name('graficas_C.graficosf');
+/*-----------------------------------RatioGeneral--------------------------------------------*/
+route::get('mensaje',[RatioGeneralController::class, 'mensaje']);
