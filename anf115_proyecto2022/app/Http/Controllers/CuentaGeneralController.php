@@ -636,32 +636,38 @@ public function graficosc($idEmpresa){
     ->where('idempresa',$idEmpresa)
     ->orderBy('year','asc')
     ->get();
+    $periodosContable = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
+    $CodCatalogo = Catalogo::select(['nombrecuenta','codigocuenta'])
+                                         ->where('idempresa', '=', $idEmpresa)
+                                         ->get();
     $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idempresa', '=', $idEmpresa)->get();
     $nameEmpresa = $nombreEmpresa[0]->nombreempresa;
     $puntos = [];
     foreach($consultas as $consulta){
         $puntos[] = ['name'=>$consulta['year'], 'y'=>floatval($consulta['saldo']),'idempresa'=>$idEmpresa,'nameEmpresa'=>$nameEmpresa];
     }
-    return view("GraficoConsultas",compact('idEmpresa','nameEmpresa','consultas') ,["data" => json_encode($puntos)]);
+    return view("GraficoConsultas",compact('idEmpresa','nameEmpresa','consultas','periodosContable','CodCatalogo') ,["data" => json_encode($puntos)]);
+    //dd($periodosContable);
 }
 
 public function graficosf(Request $request){
     $fechainicio = $request->input('fechainicio');
     $fechafin = $request->input('fechafin');
     $idEmpresa = $request->input('idEmpresa');
-    
+    $periodosContable = Periodocontable::select(['year'])->where('idempresa', '=', $idEmpresa)->get();
     $consultas = Cuentageneral::select(['year','saldo','idEmpresa'])
     ->where('idEmpresa',$idEmpresa)
     ->whereBetween('year', [$fechainicio, $fechafin])
     ->orderBy('year','asc')
     ->get();
+    
     $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idEmpresa', '=', $idEmpresa)->get();
     $nameEmpresa = $nombreEmpresa[0]->nombreempresa;
     $puntos = [];
     foreach($consultas as $consulta){
         $puntos[] = ['name'=>$consulta['year'], 'y'=>floatval($consulta['saldo']),'idEmpresa'=>$idEmpresa,'nameEmpresa'=>$nameEmpresa];
     }
-    return view("graficos",compact('idEmpresa','nameEmpresa','consultas') ,["data" => json_encode($puntos)]);
+    return view("graficos",compact('idEmpresa','nameEmpresa','consultas','periodosContable') ,["data" => json_encode($puntos)]);
     // dd($consultas);
     //return $request;
     //return view("graficos");

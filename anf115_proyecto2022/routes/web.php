@@ -5,9 +5,11 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\CuentaGeneralController;
 
 use App\Http\Controllers\CatalogoController;
-
 use App\Http\Controllers\CatalogoImportController;
+
 use App\Http\Controllers\RatioController;
+
+use App\Http\Controllers\RatioGeneralController;
 
 
 /*
@@ -101,6 +103,8 @@ Route::PATCH('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class
 Route::GET('/catalogos/{idEmpresa}/{codigocuenta}/edit', [CatalogoController::class, 'edit'])->name('catalogos.edit');
 Route::DELETE('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'destroy'])->name('catalogos.destroy');
 
-/*----------------------------------------------------------------------------------------*/
+/*-----------------------------Graficos-----------------------------------------------------------*/
 Route::get('graficasc/{idEmpresa}',[CuentaGeneralController::class,'graficosc'])->name('graficas_C');
 Route::get('graficasc/{idEmpresa}/graficosf',[CuentaGeneralController::class,'graficosf'])->name('graficas_C.graficosf');
+/*-----------------------------------RatioGeneral--------------------------------------------*/
+route::get('mensaje',[RatioGeneralController::class, 'mensaje']);

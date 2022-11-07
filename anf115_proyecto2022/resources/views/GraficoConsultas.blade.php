@@ -47,7 +47,13 @@
   <div class="well">
     <div class="form-group">
       <label for="Desde">Desde:</label>
-      <input type="text" name="fechainicio" id="fini" placeholder="Fecha Inicio">
+      <label>Periodo Contable A</label>
+          <select  name="fechainicio" id="periodoContable"  class="form-select form-select-lg mb-3"  required>
+            @foreach ($periodosContable as $periodo)
+            <option value="{{$periodo->year}}">{{$periodo->year}}</option>
+              @endforeach
+              </select>
+      <!-- <input type="text" name="fechainicio" id="fini" placeholder="Fecha Inicio"> -->
     </div>
   </div>
 
@@ -55,7 +61,14 @@
     <div class="col-xs-6 col-sm-6 col-md-6">
       <div class="form-group">
         <label for="Hasta">Hasta</label>
-        <input type="text" name="fechafin" id="ffin" placeholder="Fecha Fin">
+        <br>
+          <label>Periodo Contable B</label>
+          <select  name="fechafin" id="periodoContableB"  class="form-select form-select-lg mb-3"  required>
+          @foreach ($periodosContable as $periodo)
+          <option value="{{$periodo->year}}">{{$periodo->year}}</option>
+          @endforeach
+          </select>
+        <!-- <input type="text" name="fechafin" id="ffin" placeholder="Fecha Fin"> -->
       </div>
     </div>
   </div>
@@ -63,20 +76,13 @@
     <div class="col-xs-6 col-sm-6 col-md-6">
       <div class="form-group">
         <label for="cuenta">Cuenta</label>    
-        <select type="text" name="codCuenta" class="custom-select">
-          <option selected="">Selecciona el tipo de cuenta</option>
-          <option value="1">Activo Corriente</option>
-          <option value="2">Pasivo Corriente</option>
-          <option value="3">Costos de las ventas</option>
-          <option value="4">Inventario</option>
-          <option value="5">Pasivo Total</option>
-          <option value="6">Activo Total</option>
-          <option value="7">Patrimonio</option>
-          <option value="8">Utilidad Neta</option>
-          <option value="9">Ventas</option>
-          <option value="10">Utilidad Bruta</option>
-          <option value="11">Utilidad Operativa</option>
-        </select>
+        <select  name="codCuenta" id="periodoContableB"  class="form-select form-select-lg mb-3"  required>
+          @foreach ($CodCatalogo as $catalogo)
+          <option value="{{$catalogo->codigocuenta}}">{{$catalogo->nombrecuenta}}</option>
+          @endforeach
+          </select>
+        
+            <br>  
         <input type="hidden" id="idEmpresa" name="idEmpresa" value="{{$idEmpresa}}">
       </div>
     </div>
