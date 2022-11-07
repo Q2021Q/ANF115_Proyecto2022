@@ -41,13 +41,11 @@
   <div id="container"></div>
   <div id="container2"></div>
     </figure> 
-{{$idEmpresa}}{{$nameEmpresa}}
 <form action="graficasc/graficosf" method="GET">
   {{csrf_field()}}
   <div class="well">
     <div class="form-group">
       <label for="Desde">Desde:</label>
-      <label>Periodo Contable A</label>
           <select  name="fechainicio" id="periodoContable"  class="form-select form-select-lg mb-3"  required>
             @foreach ($periodosContable as $periodo)
             <option value="{{$periodo->year}}">{{$periodo->year}}</option>
@@ -61,8 +59,6 @@
     <div class="col-xs-6 col-sm-6 col-md-6">
       <div class="form-group">
         <label for="Hasta">Hasta</label>
-        <br>
-          <label>Periodo Contable B</label>
           <select  name="fechafin" id="periodoContableB"  class="form-select form-select-lg mb-3"  required>
           @foreach ($periodosContable as $periodo)
           <option value="{{$periodo->year}}">{{$periodo->year}}</option>
