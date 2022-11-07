@@ -133,7 +133,11 @@ public  function extraerCuentasDuplicasdadRatio($cuentaBalance): array{
 
     $arrayCodigoCuetasRatio = array();    
     for ( $j = 0; $j < count($cuentaBalance); $j = $j + 1 ) {
-        $arrayCodigoCuetasRatio[$j] = $cuentaBalance[$j]->get_codigoCuentaRatio();
+        $ratio = $cuentaBalance[$j]->get_codigoCuentaRatio();
+        if(!empty($ratio)){
+            $arrayCodigoCuetasRatio[$j] = $ratio;
+        }
+        
     }
 
         $arraySinDuplicados = array();
