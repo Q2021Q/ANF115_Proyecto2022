@@ -110,9 +110,9 @@
                         <div class="card-header text-center">
                         <p class="h6">Cuentas de Catalogo</p>
                             </div>
-                        </div>
+                        </div> 
                         <div class="card-body" class="card-body text-secondary">
-                            <a>
+                            <a href="{{ URL::to('catalogos')}}">
                                 <img class="card-img-top" src="{{asset('imagenes/cuentaCatalogo.jpg')}}" alt=""
                                     class="img-fluid">
                             </a>
