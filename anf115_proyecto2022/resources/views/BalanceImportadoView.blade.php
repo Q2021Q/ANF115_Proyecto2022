@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+<h1>{{$nomE}}</h1>
+
+
 @section('menu')
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -34,7 +37,15 @@
 @endsection
 
 @section('content')
-    <h2>Balance General</h2>
+
+
+   
+    <h2>{{$nombreEstado}}</h2>
+   
+    <script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </script>
+    
 
 <?php
     $mensaje_error_si_no = '';

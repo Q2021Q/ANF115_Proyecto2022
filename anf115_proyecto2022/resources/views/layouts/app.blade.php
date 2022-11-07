@@ -18,13 +18,9 @@
 <!-- -----------------------------------------------Top Menu start -->
 @include('layouts.topMenu')
 <!-- -----------------------------------------------Left Menu start -->
-
+@include('layouts.leftMenu')
 
 <!-- Left Menu start -->
-<section class="menu">
-@yield('menu')
-  
-</section>
 
 <!-- Left Menu end -->
 <!-- -----------------------------------------------Main Content (Body) -->
