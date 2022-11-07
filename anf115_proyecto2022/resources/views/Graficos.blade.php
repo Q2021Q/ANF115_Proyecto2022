@@ -16,7 +16,7 @@
           <img src="{{ asset('vendors/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Solo William trabaja</a>
+        <a href="#" class="d-block">Bienvenido Usuario</a>
         </div>
       </div>
 
@@ -34,67 +34,100 @@
 @endsection
 
 @section('content')
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Graficos</h1>
-            
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Otra pagina</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
-    {{-- Main content --}}
-    <div class="content">
-        <h3>prueba</h3>
-        <div id="container"></div>
-    </div>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script>
-        Highcharts.chart('container', {
+ <!-- Estadísticas gráficos -->
+ <figure class="highcharts-figure">
+  <div id="container"></div>
+  <div id="container2"></div>
+</figure> 
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<script>
+    Highcharts.chart('container', {
+  chart: {
+    plotBackgroundColor: null,
+    plotBorderWidth: null,
+    plotShadow: false,
+    type: 'pie'
+  },
+  title: {
+    text: 'Datos de empresa {{$nameEmpresa}} por años seleccionados y cuenta especifica'
+  },
+  accessibility: {
+    point: {
+      valueSuffix: '%'
+    }
+  },
+  plotOptions: {
+    pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+        enabled: true,
+        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+      }
+    }
+  },
+  series: [{
+    name: 'Saldo',
+    colorByPoint: true,
+    data: <?= $data ?>
+  }]
+});
+Highcharts.chart('container2', {
     chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
+        type: 'column'
     },
     title: {
-        text: 'Saldo del año'
+        align: 'left',
+        text: ''
     },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    subtitle: {
+        align: 'left',
+        text: ''
     },
     accessibility: {
-        point: {
-            valueSuffix: '%'
+        announceNewData: {
+            enabled: true
         }
     },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: 'Cantidad en dolares $'
+        }
+
+    },
+    legend: {
+        enabled: false
+    },
     plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
+        series: {
+            borderWidth: 0,
             dataLabels: {
                 enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                format: '{point.y:.1f}'
             }
         }
     },
-    series: [{
-        name: 'Saldo',
-        colorByPoint: true,
-        data: <?= $data ?>
-    }]
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+    },
+
+    series: [
+        {
+            name: 'Empresa {{$nameEmpresa}}',
+            colorByPoint: true,
+            data: <?= $data ?>
+        }
+      ],
 });
-    </script>
+</script>
 @endsection

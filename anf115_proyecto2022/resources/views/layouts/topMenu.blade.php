@@ -10,7 +10,7 @@
         <a href="{{route('home_empresa')}}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">algo mas aun no se</a>
+        <a href="#" class="nav-link"></a>
       </li>
     </ul>
     <!-- Right navbar links -->

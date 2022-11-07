@@ -124,7 +124,7 @@
                     <div class="card" style="height: 20rem;">
                         <div class="card" class="card border-primary mb-3">
                         <div class="card-header text-center">
-                        <p class="h6">Gestionar Priodo Contable</p>
+                        <p class="h6">Gestionar Periodo Contable</p>
                             </div>
                         </div>
                         <div class="card-body" class="card-body text-secondary">
@@ -160,7 +160,7 @@
                             </div>
                         </div>
                         <div class="card-body" class="card-body text-secondary">
-                            <a>
+                        <a href="{{route('graficas_C', $idEmpresa)}}">
                                 <img class="card-img-top" src="{{asset('imagenes/grafico.jpg')}}" alt=""
                                     class="img-fluid">
                             </a>

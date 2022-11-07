@@ -100,3 +100,7 @@ Route::resource('/catalogos', CatalogoController::class)->except([
 Route::PATCH('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'update'])->name('catalogos.update');
 Route::GET('/catalogos/{idEmpresa}/{codigocuenta}/edit', [CatalogoController::class, 'edit'])->name('catalogos.edit');
 Route::DELETE('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'destroy'])->name('catalogos.destroy');
+
+/*----------------------------------------------------------------------------------------*/
+Route::get('graficasc/{idEmpresa}',[CuentaGeneralController::class,'graficosc'])->name('graficas_C');
+Route::get('graficasc/{idEmpresa}/graficosf',[CuentaGeneralController::class,'graficosf'])->name('graficas_C.graficosf');
