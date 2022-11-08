@@ -24,7 +24,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <div>
-            <!-- <a href="{{route('empresa_insert')}}" class="btn btn-primary">Agregar Empresa</a> -->
+            <a href="{{route('empresa_insert')}}" class="btn btn-primary">Agregar Empresa</a> -->
         </div>
         </ul>
       </nav>  <!-- /.sidebar-menu -->
@@ -110,9 +110,9 @@
                         <div class="card-header text-center">
                         <p class="h6">Cuentas de Catalogo</p>
                             </div>
-                        </div>
+                        </div> 
                         <div class="card-body" class="card-body text-secondary">
-                            <a>
+                            <a href="{{ URL::to('catalogos')}}">
                                 <img class="card-img-top" src="{{asset('imagenes/cuentaCatalogo.jpg')}}" alt=""
                                     class="img-fluid">
                             </a>
