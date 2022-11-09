@@ -105,7 +105,7 @@
     type: 'pie'
   },
   title: {
-    text: 'Datos de empresa {{$nameEmpresa}} todos los años'
+    text: 'Datos de empresa: {{$nameEmpresa}}.'
   },
   accessibility: {
     point: {
@@ -123,7 +123,7 @@
     }
   },
   series: [{
-    name: 'Saldo',
+    name: 'Saldo: $',
     colorByPoint: true,
     data: <?= $data ?>
   }]
@@ -134,12 +134,12 @@ Highcharts.chart('container2', {
         type: 'column'
     },
     title: {
-        align: 'left',
-        text: ''
+        align: 'center',
+        text: 'Datos de empresa: {{$nameEmpresa}}.'
     },
     subtitle: {
-        align: 'left',
-        text: ''
+        align: 'center',
+        text: 'Todos los datos de empresa {{$nameEmpresa}} todos los años'
     },
     accessibility: {
         announceNewData: {
@@ -167,12 +167,12 @@ Highcharts.chart('container2', {
 
     tooltip: {
         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
     },
 
     series: [
         {
-            name: 'Empresa {{$nameEmpresa}}',
+            name: '{{$nameEmpresa}}',
             colorByPoint: true,
             data: <?= $data ?>
         }
@@ -184,8 +184,8 @@ Highcharts.chart('container3', {
         type: 'bar'
     },
     title: {
-        align: 'left',
-        text: ''
+        align: 'center',
+        text: 'Datos de empresa: {{$nameEmpresa}}.'
     },
     subtitle: {
         align: 'left',
@@ -216,12 +216,12 @@ Highcharts.chart('container3', {
 
     tooltip: {
         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> del total<br/>'
     },
 
     series: [
         {
-            name: 'Empresa {{$nameEmpresa}}',
+            name: '{{$nameEmpresa}}',
             colorByPoint: true,
             data: <?= $data ?>
         }
