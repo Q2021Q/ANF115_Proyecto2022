@@ -70,6 +70,14 @@ route::get('comparacionRatio_periodoAB/{idEmpresa}',[RatioController::class,'com
 
 route::get('importarBalanceRedi/{cuentasBalance1}',[CuentaGeneralController::class,'importarBalanceRedirec'])->name('importarBalance_Redirec');
 
+//------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
+//-----------------------------------------
+route::get('actualizarRatioGeneralGet',[RatioGeneralController::class,'actualizarRatioGeneralGet'])->name('actualizarRatioGeneral_Get');
+route::get('actualizarRatioGenera/{idgeneralratio}',[RatioGeneralController::class,'actualizarRatioGenera'])->name('actualizarRatioGenera_');
+
+//---------------------------------------------------------------------------------------
+//----------------------------------------------------------------
                                                    //fucion                //En la vista GuardarEmpresaView                                          
 route::post('guardarEmp',[EmpresaController::class,'guardarEmpresa'])->name('guardar_empresa_e');
 
@@ -85,15 +93,14 @@ route::post('analisisHorizontalPost',[AnalisisHVcontroller::class,'analisisHoriz
 
 route::post('comparacionRatioPromedioEmpresarialPost',[RatioController::class,'comparacionRatioPromedioEmpresarial'])->name('comparacionRatioPromedioEmpresarial_post');
 
-//----------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------
-//--------------------------------
 route::post('analisisVerticalPost',[AnalisisHVcontroller::class,'analisisVerticallPost'])->name('analisisVerticall_Post');
+
+route::post('actualizarRatioGeneralPost',[RatioGeneralController::class,'actualizarRatioGeneralPost'])->name('actualizarRatioGeneral_Post');
+
 
 // Route::get('/', function () {
 //     return view('index');
 // });
-// /*----------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 Route::get('/empresa', function () {
     return view('GuardarEmpresaView');

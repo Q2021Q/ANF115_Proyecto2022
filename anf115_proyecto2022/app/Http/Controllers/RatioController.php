@@ -107,6 +107,8 @@ class RazonFinanciera{
 
       $RazonFinanciera = new RazonFinanciera();
 
+      $rubroMiEmpresa = Empresa::select(['idrubroempresa'])->where('idempresa', '=', $idEmpresa)->get();
+     // echo $rubroMiEmpresa[0]->idrubroempresa;
 
       $listEmpresa = Empresa::all();
 
@@ -120,28 +122,35 @@ class RazonFinanciera{
 
       foreach($listEmpresa as $empresa){
         
-        $activoCorrienta = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'II');
-        $pasivoCorrienta = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'I');
-        $inventario = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'IV');
-        $activoTotal = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'VI');
+        $rubroEmpresa = Empresa::select(['idrubroempresa'])->where('idempresa', '=', $empresa->IDEMPRESA)->get();
+       // echo $rubroEmpresa[0]->idrubroempresa;
 
-          if($activoCorrienta != -1 && $pasivoCorrienta !=-1){
-              /* II/I */
-              $liquidezCorrienteSumatoria = $liquidezCorrienteSumatoria + $activoCorrienta/$pasivoCorrienta;
-              $liquidezCcontatador = $liquidezCcontatador + 1;
-          }
+        if($rubroMiEmpresa[0]->idrubroempresa == $rubroEmpresa[0]->idrubroempresa){
 
-          if($activoCorrienta != -1 && $pasivoCorrienta !=-1 && $inventario !=-1){
-            /* (II-IV)/I */
-            $pruebaAcidaSumatoria = $pruebaAcidaSumatoria + ($activoCorrienta-$inventario)/$pasivoCorrienta;
-            $pruebaAcidaContador = $pruebaAcidaContador +1;
-            }
+              $activoCorrienta = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'II');
+              $pasivoCorrienta = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'I');
+              $inventario = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'IV');
+              $activoTotal = $RazonFinanciera->getSaldoCuenta($empresa->IDEMPRESA, $periodoContable, 'VI');
+      
+                if($activoCorrienta != -1 && $pasivoCorrienta !=-1){
+                    /* II/I */
+                    $liquidezCorrienteSumatoria = $liquidezCorrienteSumatoria + $activoCorrienta/$pasivoCorrienta;
+                    $liquidezCcontatador = $liquidezCcontatador + 1;
+                }
+      
+                if($activoCorrienta != -1 && $pasivoCorrienta !=-1 && $inventario !=-1){
+                  /* (II-IV)/I */
+                  $pruebaAcidaSumatoria = $pruebaAcidaSumatoria + ($activoCorrienta-$inventario)/$pasivoCorrienta;
+                  $pruebaAcidaContador = $pruebaAcidaContador +1;
+                  }
+      
+                if($activoCorrienta != -1 && $pasivoCorrienta !=-1 && $activoTotal !=-1){
+                  /* (II-I)/VI */
+                  $razonCapitalSumatoria = $razonCapitalSumatoria + ($activoCorrienta-$pasivoCorrienta)/$activoTotal;
+                  $razonCapitalContador = $razonCapitalContador +1;
+                }
 
-           if($activoCorrienta != -1 && $pasivoCorrienta !=-1 && $activoTotal !=-1){
-             /* (II-I)/VI */
-             $razonCapitalSumatoria = $razonCapitalSumatoria + ($activoCorrienta-$pasivoCorrienta)/$activoTotal;
-             $razonCapitalContador = $razonCapitalContador +1;
-           }
+        }
 
       }
     
