@@ -38,8 +38,11 @@
 
     <!-- Estadísticas gráficos -->
     <figure class="highcharts-figure">
-  <div id="container"></div>
-  <div id="container2"></div>
+      <div class="row">
+        <div id="container"  class="col-lg-6"></div>
+        <div id="container2" class="col-lg-6"></div>
+        <div id="container3" class="col-lg-12"></div>
+      </div>
     </figure> 
 <form action="graficasc/graficosf" method="GET">
   {{csrf_field()}}
@@ -73,7 +76,7 @@
       <div class="form-group">
         <label for="cuenta">Cuenta</label>    
         <select  name="codCuenta" id="periodoContableB"  class="form-select form-select-lg mb-3"  required>
-          @foreach ($CodCatalogo as $catalogo)
+          @foreach ($codigoCuenta as $catalogo)
           <option value="{{$catalogo->codigocuenta}}">{{$catalogo->nombrecuenta}}</option>
           @endforeach
           </select>
@@ -145,6 +148,7 @@ Highcharts.chart('container2', {
     },
     xAxis: {
         type: 'category'
+        //type: ['category','opcion','otraOpcion']
     },
     yAxis: {
         title: {
@@ -156,14 +160,59 @@ Highcharts.chart('container2', {
         enabled: false
     },
     plotOptions: {
-        series: {
-            borderWidth: 0,
-            dataLabels: {
-                enabled: true,
-                format: '{point.y:.1f}'
-            }
+    series: {
+      stacking: 'normal'
+    }
+  },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+    },
+
+    series: [
+        {
+            name: 'Empresa {{$nameEmpresa}}',
+            colorByPoint: true,
+            data: <?= $data ?>
+        }
+      ],
+});
+
+Highcharts.chart('container3', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        align: 'left',
+        text: ''
+    },
+    subtitle: {
+        align: 'left',
+        text: ''
+    },
+    accessibility: {
+        announceNewData: {
+            enabled: true
         }
     },
+    xAxis: {
+        type: 'category'
+    },
+    yAxis: {
+        title: {
+            text: 'Cantidad en dolares $'
+        }
+
+    },
+    legend: {
+        enabled: false
+    },
+    plotOptions: {
+    series: {
+      stacking: 'normal'
+    }
+  },
 
     tooltip: {
         headerFormat: '<span style="font-size:11px">{series.name}</span><br>',

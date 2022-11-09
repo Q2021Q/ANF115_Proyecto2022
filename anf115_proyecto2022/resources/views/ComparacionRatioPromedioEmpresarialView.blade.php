@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-<h1>{{$nomEmpresa}}</h1>
-
-
 @section('menu')
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
