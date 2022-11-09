@@ -192,7 +192,7 @@
                             </div>
                         </div>
                         <div class="card-body" class="card-body text-secondary">
-                            <a>
+                            <a href="{{route('analisisVerticall_Get', $idEmpresa)}}">
                                 <img class="card-img-top" src="{{asset('imagenes/analisisHorizontal.webp')}}" alt=""
                                     class="img-rounded img-fluid">
                                     

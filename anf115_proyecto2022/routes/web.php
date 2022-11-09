@@ -62,6 +62,8 @@ route::get('comparacionRatioGeneral/{idEmpresa}',[RatioController::class,'compar
 
 route::get('analisisHorizontalGet/{idEmpresa}',[AnalisisHVcontroller::class,'analisisHorizontalGet'])->name('analisisHorizontal_Get');
 
+route::get('analisisVerticaGet/{idEmpresa}',[AnalisisHVcontroller::class,'analisisVerticallGet'])->name('analisisVerticall_Get');
+
 route::get('comparacionRatioPromedioEmpresarialGet/{idEmpresa}',[RatioController::class,'comparacionRatioPromedioEmpresarialRedi'])->name('comparacionRatioPromedioEmpresarialRedi_get');
 
 route::get('comparacionRatio_periodoAB/{idEmpresa}',[RatioController::class,'comparacionRatioPeriodoA_periodoB_Redirec'])->name('comparacionRatio_periodoAperidoB');
@@ -81,11 +83,12 @@ route::post('comparacionRatioPeriodoABpost',[RatioController::class,'comparacion
 
 route::post('analisisHorizontalPost',[AnalisisHVcontroller::class,'analisisHorizontalPost'])->name('analisisHorizontal_Post');
 
-//-------------------------------------------------------------------------------------------------------
-//----------------------------------------------------------
-//-----------------------
 route::post('comparacionRatioPromedioEmpresarialPost',[RatioController::class,'comparacionRatioPromedioEmpresarial'])->name('comparacionRatioPromedioEmpresarial_post');
-//---------------------------------------
+
+//----------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//--------------------------------
+route::post('analisisVerticalPost',[AnalisisHVcontroller::class,'analisisVerticallPost'])->name('analisisVerticall_Post');
 
 // Route::get('/', function () {
 //     return view('index');
