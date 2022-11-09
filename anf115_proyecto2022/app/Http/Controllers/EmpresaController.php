@@ -119,4 +119,7 @@ class EmpresaController extends Controller
         dd($salario);
         return "El pago es $salario mensual";
     }
+
+    
+
 }
