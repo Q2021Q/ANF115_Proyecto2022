@@ -144,7 +144,7 @@
                             </div>
                         </div>
                         <div class="card-body" class="card-body text-secondary">
-                            <a>
+                            <a href="{{route('actualizarRatioGeneral_Get')}}">
                                 <img class="card-img-top" src="{{asset('imagenes/cuentasRatios.png')}}" alt=""
                                     class="img-fluid">
                             </a>
