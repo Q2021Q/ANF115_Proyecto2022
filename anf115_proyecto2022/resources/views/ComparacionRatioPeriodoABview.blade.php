@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-<h1>{{$nomEmpresa}}</h1>
-
-
 @section('menu')
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -60,7 +57,7 @@
                         </div>
                         <div class="card-body" class="card-body text-secondary">
                         
-                        <h4>Selecione los periodos a comparar</h4>
+                        <h4>Selecione los periodos a comparar Para {{$nomEmpresa}}</h4>
                         <br> 
 
                             <label>Periodo Contable A</label>

@@ -1,8 +1,5 @@
 @extends('layouts.app')
 
-<h1>{{$nomEmpresa}}</h1>
-
-
 @section('menu')
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -19,7 +16,7 @@
           <img src="{{ asset('vendors/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Solo William trabaja</a>
+        <a href="#" class="d-block">Bienvenido Usuario</a>
         </div>
       </div>
 
@@ -47,7 +44,7 @@
                         <div class="card" class="card border-primary mb-3">
                             <div class="card-header text-center">
                            
-                            <h2 class="h3">Analisis Horizontal</h2>
+                            <h2 class="h3">Analisis Horizontal- Para {{$nomEmpresa}}</h2>
                             </div>
                         </div>
                         <div class="card-body" class="card-body text-secondary">

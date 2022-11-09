@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-<h1>{{$nomEmpresa}}</h1>
 
 
 @section('menu')
@@ -19,7 +18,7 @@
           <img src="{{ asset('vendors/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Solo William trabaja</a>
+        <a href="#" class="d-block">Bienvenido Usuario</a>
         </div>
       </div>
 
@@ -30,13 +29,14 @@
             <!-- <a href="{{route('empresa_insert')}}" class="btn btn-primary">Agregar Empresa</a> -->
         </div>
         </ul>
-      </nav>  <!-- /.sidebar-menu -->
-    </div>  <!-- /.sidebar -->
+    </nav>  <!-- /.sidebar-menu -->
+</div>  <!-- /.sidebar -->
 </aside>
 
 @endsection
 
 @section('content')
+<h1>{{$nomEmpresa}}</h1>
 
 <form action="{{route('analisisVerticall_Post')}}" method="POST">
     {{csrf_field()}}

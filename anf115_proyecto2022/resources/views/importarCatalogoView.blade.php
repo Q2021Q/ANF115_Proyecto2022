@@ -18,7 +18,7 @@
           <img src="{{ asset('vendors/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Solo William trabaja</a>
+          <a href="#" class="d-block">Bienvenido Usuario</a>
         </div>
       </div>
 
@@ -35,7 +35,6 @@
 @endsection
 @section('content')
   <title>Carga de archivos</title>
-<a href="{{route('home_empresa')}}">HOME</a>
     <form action="{{route('importarCatalogo_CSV')}}" method = "POST" enctype="multipart/form-data" id="cargaFile">
     {{csrf_field()}}
 
