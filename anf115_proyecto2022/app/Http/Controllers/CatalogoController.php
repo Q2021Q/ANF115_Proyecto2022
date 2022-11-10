@@ -20,11 +20,11 @@ class CatalogoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($idEmpresa)
     {
-        $catalogos = Catalogo::paginate();
+        $catalogos = Catalogo::where('idempresa', $idEmpresa)->paginate();
 
-        return view('catalogo.index', compact('catalogos'))
+        return view('catalogo.index', compact('catalogos','idEmpresa'))
             ->with('i', (request()->input('page', 1) - 1) * $catalogos->perPage());
     }
 
@@ -33,12 +33,10 @@ class CatalogoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($idEmpresa)
     {
         $catalogo = new Catalogo();
-        $empresas = Empresa::select(['idempresa','nombreempresa'])->pluck('nombreempresa', 'idempresa')->toArray();
-    
-        return view('catalogo.create', compact('catalogo', 'empresas'));
+       return view('catalogo.create', compact('catalogo', 'idEmpresa'));
     }
 
     /**
@@ -53,7 +51,7 @@ class CatalogoController extends Controller
 
         $catalogo = Catalogo::create($request->all());
 
-        return redirect()->route('catalogos.index')
+        return redirect()->route('catalogos.index',$catalogo->IDEMPRESA)
             ->with('success', 'Catalogo created successfully.');
     }
 
@@ -67,7 +65,7 @@ class CatalogoController extends Controller
     {
         $catalogo = Catalogo::where('idempresa', $idEmpresa)->where('codigocuenta',$codigocuenta)->get();
 
-        return view('catalogo.show', compact('catalogo'));
+        return view('catalogo.show', compact('catalogo','idEmpresa'));
     }
 
     /**
@@ -99,7 +97,7 @@ class CatalogoController extends Controller
 
         $catalogo->update(['NOMBRECUENTA'=>$request->NOMBRECUENTA]);
 
-        return redirect()->route('catalogos.index')
+        return redirect()->route('catalogos.index',$idEmpresa)
             ->with('success', 'Catalogo updated successfully');
     }
 
@@ -121,6 +119,6 @@ class CatalogoController extends Controller
             $message="Cannot delete a parent row";
         }
 
-        return redirect()->route('catalogos.index')->with($type, $message);
+        return redirect()->route('catalogos.index',$idEmpresa)->with($type, $message);
     }
 }
