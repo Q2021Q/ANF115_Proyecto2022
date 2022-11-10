@@ -636,24 +636,28 @@ public function importarBalanceRedirec($cuentasBalance): array{
 /*-------------------------------------------------------------------------------------------------*/
 
 public function graficosc($idEmpresa){
-    $consultas = Cuentageneral::select(['year','saldo','idempresa'])
-    ->where('idempresa',$idEmpresa)
-    ->orderBy('year','asc')
+    $consultas = Cuentageneral::join('Catalogo','Cuentageneral.codigocuenta','=','Catalogo.codigocuenta')
+    ->select('Cuentageneral.saldo','Cuentageneral.year','Cuentageneral.idEmpresa','Catalogo.nombrecuenta','Catalogo.codigocuenta')
+    ->where('Cuentageneral.idEmpresa',$idEmpresa)
+    ->orderBy('codigocuenta','asc')
     ->get();
-    $periodosContable = Cuentageneral::select(['year'])->where('idempresa', '=', $idEmpresa)
+    $periodosContable = periodoContable::select(['year'])->where('idEmpresa', '=', $idEmpresa)
                                         ->orderBy('year','asc')
                                         ->get();
     $codigoCuenta = Catalogo::select(['nombrecuenta','codigocuenta'])
-                                         ->where('idempresa', '=', $idEmpresa)
+                                         ->where('idEmpresa', '=', $idEmpresa)
                                          ->get();
-    $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idempresa', '=', $idEmpresa)->get();
+    $nombreEmpresa = Empresa::select(['nombreempresa'])->where('idEmpresa', '=', $idEmpresa)->get();
     $nameEmpresa = $nombreEmpresa[0]->nombreempresa;
     $puntos = [];
     foreach($consultas as $consulta){
-        $puntos[] = ['name'=>$consulta['year'], 'y'=>floatval($consulta['saldo']),'idempresa'=>$idEmpresa,'nameEmpresa'=>$nameEmpresa];
+        $puntos[] = ['name'=>$consulta['nombrecuenta'], 'y'=>floatval($consulta['saldo']),'idempresa'=>$idEmpresa,'nameEmpresa'=>$nameEmpresa];
     }
-    return view("GraficoConsultas",compact('idEmpresa','nameEmpresa','consultas','periodosContable','CodCatalogo') ,["data" => json_encode($puntos)]);
-    //dd($periodosContable);
+    return view("GraficoConsultas",compact('idEmpresa','nameEmpresa','consultas','periodosContable','codigoCuenta') ,["data" => json_encode($puntos)]);
+    //dd($consultas);
+    //return $consultas;
+    //return ["data" => json_encode($puntos)];
+    
 }
 
 public function graficosf(Request $request){
@@ -662,7 +666,7 @@ public function graficosf(Request $request){
     $idEmpresa = $request->input('idEmpresa');
     $codCuenta = $request->input('codCuenta');
 
-    $consultas = Cuentageneral::join('Catalogo','Cuentageneral.idEmpresa','=','Catalogo.idEmpresa')
+    $consultas = Cuentageneral::join('Catalogo','Cuentageneral.codigocuenta','=','Catalogo.codigocuenta')
     ->select('Cuentageneral.saldo','Cuentageneral.year','Cuentageneral.idEmpresa','Catalogo.nombrecuenta','Catalogo.codigocuenta')
     ->where('Cuentageneral.idEmpresa',$idEmpresa)
     ->where('Catalogo.codigocuenta',$codCuenta)
@@ -682,21 +686,9 @@ public function graficosf(Request $request){
     //return view("graficos");
     //dd($request->all());
     //echo "Si se enviaron $fechainicio, $fechafin, $idEmpresa";
+     //return $consultas;
 }
 
-public function eloquent(Request $request){
-    // //$arrayCuentaf = array();
-    // $consulta = Cuentageneral::select(['year','saldo','idempresa'])
-    //                         ->where('idempresa',$idEmpresa)
-    //                         ->whereBetween('year',[$desde,$hasta])
-    //                         ->orderBy('year')
-    //                         ->get();
-    // // $datos = [];
-    // // foreach($consultas as $consulta){
-    // //     $datos[] = ['name'=>$consulta['year'], 'y'=>$consulta['saldo']];
-    // // }
-    // // return $consulta->toArray();
-    dd($request->all());
-}
+
     
 }

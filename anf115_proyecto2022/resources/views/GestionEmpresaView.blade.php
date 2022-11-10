@@ -119,7 +119,7 @@
                             </div>
                         </div>
                         <div class="card-body" class="card-body text-secondary">
-                            <a >
+                            <a href="{{route('actualizarRatioGeneral_Get')}}">
                                 <img class="card-img-top" src="{{asset('imagenes/cuentasRatios.png')}}" alt=""
                                     class="img-fluid">
                             </a>
@@ -136,7 +136,7 @@
                         </div>
                         <div class="card-body" class="card-body text-secondary">
                         <a href="{{route('graficas_C', $idEmpresa)}}">
-                                <img class="card-img-top" src="{{asset('imagenes/grafico.jpg')}}" alt=""
+                                <img class="card-img-top" src="{{asset('imagenes/grafico1.png')}}" alt=""
                                     class="img-fluid">
                             </a>
                         </div>
@@ -185,7 +185,7 @@
                         </div>
                         <div class="card-body" class="card-body text-secondary">
                             <a href="{{route('comparacionRatio_General', $idEmpresa)}}">
-                                <img class="card-img-top" src="{{asset('imagenes/ratioGeneral.jpg')}}" alt=""
+                                <img class="card-img-top" src="{{asset('imagenes/ratioGeneral1.png')}}" alt=""
                                     class="img-rounded img-fluid">
                                     
                             </a>
@@ -202,7 +202,7 @@
                         </div>
                         <div class="card-body" class="card-body text-secondary">
                             <a href="{{route('comparacionRatio_periodoAperidoB', $idEmpresa)}}">
-                                <img class="card-img-top" src="{{asset('imagenes/periodoAB.jpg')}}" alt=""
+                                <img class="card-img-top" src="{{asset('imagenes/periodoAB1.png')}}" alt=""
                                     class="img-rounded img-fluid">
                                     
                             </a>
@@ -219,7 +219,24 @@
                         </div>
                         <div class="card-body" class="card-body text-secondary">
                             <a href="{{route('comparacionRatioPromedioEmpresarialRedi_get', $idEmpresa)}}">
-                                <img class="card-img-top" src="{{asset('imagenes/promedioEmpresa.jpg')}}" alt=""
+                                <img class="card-img-top" src="{{asset('imagenes/promedioEmpresa1.png')}}" alt=""
+                                    class="img-rounded img-fluid">
+                                    
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3" class="card border-secondary mb-3">
+                    <div class="card" style="height: 22rem;">
+                        <div class="card" class="card border-primary mb-3">
+                            <div class="card-header text-center">
+                            <p class="h6">Gestión datos empresa </p>
+                            </div>
+                        </div>
+                        <div class="card-body" class="card-body text-secondary">
+                            <!-- <a href="{{route('comparacionRatioPromedioEmpresarialRedi_get', $idEmpresa)}}"> -->
+                                <img class="card-img-top" src="{{asset('imagenes/gestionEmpresa1.png')}}" alt=""
                                     class="img-rounded img-fluid">
                                     
                             </a>
