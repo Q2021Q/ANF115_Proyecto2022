@@ -50,7 +50,7 @@
                             <span class="card-title">Show Catalogo</span>
                         </div>
                         <div class="float-right">
-                            <a class="btn btn-primary" href="{{ route('catalogos.index') }}"> Back</a>
+                            <a class="btn btn-primary" href="{{ route('catalogos.index',$idEmpresa) }}"> Back</a>
                         </div>
                     </div>
 

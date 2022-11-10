@@ -22,9 +22,11 @@
                             <div class="box box-info padding-1">
                             <div class="box-body">
         
+                              
                                 <div class="form-group">
-                                    {!! Form::label('$catalogo->IDEMPRESA',"Empresas") !!}
-                                    {!! Form::select('IDEMPRESA',$empresas,null, ['class' => 'form-control']) !!}
+                                    {{ Form::label('IDEMPRESA') }}
+                                    {{ Form::text('IDEMPRESA', $idEmpresa, ['class' => 'form-control', 'readonly' => 'true'. ($errors->has('IDEMPRESA') ? ' is-invalid' : ''), 'placeholder' => 'Idempresa']) }}
+                                    {!! $errors->first('IDEMPRESA', '<div class="invalid-feedback">:message</div>') !!}
                                 </div>
                                 <div class="form-group">
                                     {{ Form::label('CODIGOCUENTA') }}

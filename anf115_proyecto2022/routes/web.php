@@ -23,6 +23,8 @@ use App\Http\Controllers\RatioGeneralController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+
 
 //nombreURL es cualquier nombre, con este se accede desde el navegador
 //el nombre (nombreURL) NO ESTA relacionado con ningun archivo del proyecto
@@ -109,17 +111,21 @@ Route::get('/empresa', function () {
 Route::get('/importar', function () {
     return view('ImportarBalanceGeneralView');
 });
+// _________________________________________ Catalogo __________________________________________________________
+Route::get('/catalogos-show/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'show'])->name('catalogos.show');;
 
-Route::get('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'show'])->name('catalogos.show');;
-Route::resource('/catalogos', CatalogoController::class)->except([
-    'show'
-]);
 Route::PATCH('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'update'])->name('catalogos.update');
 Route::GET('/catalogos/{idEmpresa}/{codigocuenta}/edit', [CatalogoController::class, 'edit'])->name('catalogos.edit');
 Route::DELETE('/catalogos/{idEmpresa}/{codigocuenta}', [CatalogoController::class, 'destroy'])->name('catalogos.destroy');
+Route::get('/catalogos/{idEmpresa}', [CatalogoController::class, 'index'])->name('catalogos.index');
+Route::get('/catalogos-create/{idEmpresa}', [CatalogoController::class, 'create'])->name('catalogos.create');
+Route::POST('/catalogos', [CatalogoController::class, 'store'])->name('catalogos.store');
 
 /*-----------------------------Graficos-----------------------------------------------------------*/
 Route::get('graficasc/{idEmpresa}',[CuentaGeneralController::class,'graficosc'])->name('graficas_C');
 Route::get('graficasc/{idEmpresa}/graficosf',[CuentaGeneralController::class,'graficosf'])->name('graficas_C.graficosf');
 /*-----------------------------------RatioGeneral--------------------------------------------*/
 route::get('mensaje',[RatioGeneralController::class, 'mensaje']);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
